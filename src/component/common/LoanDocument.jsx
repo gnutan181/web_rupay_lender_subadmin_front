@@ -1,0 +1,26 @@
+export const LoanDocument = 
+  {
+  panCard : 'Pan Card',
+  aadharfront : 'Aadhar Front',
+  aadharback : 'Aadhar Back',
+  payslip1 : 'Payslip 1',
+  payslip2 : 'Payslip 2',
+  payslip3 : 'Payslip 3',
+  sevenMonthStatement : 'Seven Month Statement',
+  gstMsmeCerificate : 'GST Msme Certificate',
+  itrComution1 : 'ITR Comution 1',
+  itrComution2 : 'ITR Comution 2',
+  itrComution3 : 'ITR Comution 3',
+  oneBankStatementCurrentAccount : 'One Bank Statement Current Account',
+  oneYearSavingAccountStatement : 'One Year Saving Account Statement',
+  propertyChain : 'Property Chain',
+  map : 'Map',
+  form16 : 'Form 16',
+  form26 : "Form 26",
+  closerLetter1 : "Closer Letter 1",
+  closerLetter2 : "Closer Letter 2",
+  closerLetter3 : "Closer Letter 3",
+  sanctionLetter : 'Sanction Letter',
+  insurancePolicy : 'Insurance Policy',
+  rc : 'RC'
+  };
