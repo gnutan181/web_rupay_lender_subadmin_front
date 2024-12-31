@@ -27,6 +27,7 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   async function FetchUpdateStatus(data) {
+    console.log(data)
     try {
       const response = await axiosInstance.put(
         `/subAdmin/update-status/${loanItemId}`,
@@ -152,8 +153,9 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
                       {isOpen && (
                         <div className="origin-top-right border z-30 border-black absolute mt-3 w-[92%] md:w-[100%] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                           <div className="py-1">
-                            {subAdminPermission?.updateLoanStatus ||
-                              (subAdminPermission?.updatePaymentStatus && (
+                            {subAdminPermission?.updateLoanStatus &&
+                              // (subAdminPermission?.updatePaymentStatus && 
+                                (
                                 <div>
                                   <a
                                     href="#"
@@ -177,7 +179,8 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
                                     Cancel
                                   </a>
                                 </div>
-                              ))}
+                              )
+                              }
                             {subAdminPermission?.updatePaymentStatus && (
                               <a
                                 href="#"
