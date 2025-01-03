@@ -38,6 +38,7 @@ const CreateLead = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [leadData, setLeadData] = useState(null);
     const [selectedService, setSelectedService] = useState(null);
+    const [showServices, setShowServices] = useState(false);
 
     const fetchLeadData = async () => {
         try {
@@ -47,6 +48,7 @@ const CreateLead = () => {
 
             if (response.data.success) {
                 setLeadData(response.data.vendor[0]);
+                setShowServices(true);
             } else {
                 console.error("Failed to fetch lead data", response.data.message);
             }
@@ -58,27 +60,27 @@ const CreateLead = () => {
     const renderForm = () => {
         switch (selectedService) {
             case "personal-loan":
-                return <PersonalLoan mobile={leadData.basicInfo.mobile}/>;
+                return <PersonalLoan mobile={leadData.basicInfo.mobile} />;
             case "plbt":
-                return <PLBT mobile={leadData.basicInfo.mobile}/>;
+                return <PLBT mobile={leadData.basicInfo.mobile} />;
             case "home-loan":
-                return <HomeLoan mobile={leadData.basicInfo.mobile}/>;
+                return <HomeLoan mobile={leadData.basicInfo.mobile} />;
             case "hlbt":
-                return <HLBT mobile={leadData.basicInfo.mobile}/>;
+                return <HLBT mobile={leadData.basicInfo.mobile} />;
             case "lap":
-                return <LAP mobile={leadData.basicInfo.mobile}/>;
+                return <LAP mobile={leadData.basicInfo.mobile} />;
             case "lap-bt":
-                return <LAPBT mobile={leadData.basicInfo.mobile}/>;
+                return <LAPBT mobile={leadData.basicInfo.mobile} />;
             case "business-loan":
-                return <BusinessLoan mobile={leadData.basicInfo.mobile}/>;
+                return <BusinessLoan mobile={leadData.basicInfo.mobile} />;
             case "used-car-loan":
-                return <UsedCarLoan mobile={leadData.basicInfo.mobile}/>;
+                return <UsedCarLoan mobile={leadData.basicInfo.mobile} />;
             case "used-car-loan-bt":
-                return <UsedCarLoanBT mobile={leadData.basicInfo.mobile}/>;
+                return <UsedCarLoanBT mobile={leadData.basicInfo.mobile} />;
             // case "credit-card":
             //     return <CreditCard mobile={leadData.basicInfo.mobile}/>;
             case "motor-insurance":
-                return <MotorInsurance mobile={leadData.basicInfo.mobile}/>;
+                return <MotorInsurance mobile={leadData.basicInfo.mobile} />;
             default:
                 return null;
         }
@@ -157,7 +159,7 @@ const CreateLead = () => {
             )}
 
             {/* Services Section */}
-            <div className="mb-6">
+            {showServices ? <div className="mb-6">
                 <h2 className="text-xl font-bold mb-4">Services</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
                     {services.map((service) => (
@@ -177,7 +179,8 @@ const CreateLead = () => {
                         </div>
                     ))}
                 </div>
-            </div>
+            </div> : null}
+
 
             {/* Dynamic Form Section */}
             <div>{renderForm()}</div>
