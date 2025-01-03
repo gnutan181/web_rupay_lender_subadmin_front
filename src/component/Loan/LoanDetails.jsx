@@ -46,7 +46,20 @@ const LoanDetails = () => {
     insurancePolicy: "Insurance Policy",
     rc: "RC",
   };
+  // const downLoadFile = async (url) => {
+  //   const fileName = url.split("/").pop();
 
+  //   const aTag = document.createElement("a");
+
+  //   aTag.href = url;
+
+  //   aTag.setAttribute("download", fileName);
+
+  //   document.body.appendChild(aTag);
+
+  //   aTag.click();
+  //   aTag.remove();
+  // };
   const handleApiAfterUpdate = () => {
     fetchLoanData();
   };
@@ -238,20 +251,20 @@ const LoanDetails = () => {
     }
   };
 
-  // const downLoadFile = async (url) => {
-  //   const fileName = url.split("/").pop();
+  const downLoadFile = async (url) => {
+    const fileName = url.split("/").pop();
 
-  //   const aTag = document.createElement("a");
+    const aTag = document.createElement("a");
 
-  //   aTag.href = url;
+    aTag.href = url;
 
-  //   aTag.setAttribute("download", fileName);
+    aTag.setAttribute("download", fileName);
 
-  //   document.body.appendChild(aTag);
+    document.body.appendChild(aTag);
 
-  //   aTag.click();
-  //   aTag.remove();
-  // };
+    aTag.click();
+    aTag.remove();
+  };
   const splitCamelCase = (str) => {
     return str.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
   };
@@ -671,10 +684,10 @@ const LoanDetails = () => {
                 return (
                   <li key={key} className="m-2">
                     <div
-                      // onClick={() => downLoadFile(value)}
+                      onClick={() => downLoadFile(value)}
                       className="flex items-center gap-2 mb-3 cursor-pointer"
                     >
-                      {/* <FaDownload className="text-2xl  text-[#656575]" /> */}
+                      <FaDownload className="text-2xl  text-[#656575]" /> 
                       <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
                         {documentLabel[key]}
                       </h5>

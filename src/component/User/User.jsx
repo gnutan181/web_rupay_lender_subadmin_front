@@ -83,12 +83,12 @@ const User = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead>
                 <tr>
-                  <th
+                  {/* <th
                     scope="col"
                     className="px-3 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                   >
                     No.
-                  </th>
+                  </th> */}
                   <th
                     scope="col"
                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
@@ -124,6 +124,12 @@ const User = () => {
                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                   >
                     State
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                  >
+                    Status
                   </th>
                   <th
                     scope="col"
@@ -191,7 +197,7 @@ const User = () => {
                   .map((item, i) => (
                     <tbody key={i} className="divide-y divide-gray-200">
                       <tr className="bg-white border-b  text-[#3B3935] font-normal text-xs md:text-sm">
-                        <td className="px-3 py-4">{i + 1}</td>
+                        {/* <td className="px-3 py-4">{i + 1}</td> */}
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                           {item.basicInfo?.username || "N/A"}
                         </td>
@@ -205,10 +211,13 @@ const User = () => {
                         {item?.basicInfo?.referral || "N/A"}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                          {item.basicInfo?.city || "N/A"}
+                          {item?.basicInfo?.city || "N/A"}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                          {item.basicInfo?.state || "N/A"}
+                          {item?.basicInfo?.state || "N/A"}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                          {item?.activeStatus || "N/A"}
                         </td>
                         <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-800 ">
                           <MdOutlineRemoveRedEye
