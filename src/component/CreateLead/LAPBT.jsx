@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosInstance from "../axiosInstance";
+import { fetchCityAndState } from "../fetchCityAndState";
 
 const LAPBT = ({ mobile }) => {
   const [personalDetails, setPersonalDetails] = useState({
@@ -56,9 +57,24 @@ const LAPBT = ({ mobile }) => {
     sanctionLetter: null,
   });
 
-  const handleInputChange = (e, setFunction) => {
+  // const handleInputChange = (e, setFunction) => {
+  //   const { name, value } = e.target;
+  //   setFunction((prev) => ({ ...prev, [name]: value }));
+  // };
+  const handleInputChange = async (e, setFunction) => {
     const { name, value } = e.target;
     setFunction((prev) => ({ ...prev, [name]: value }));
+    // Call the fetchCityAndState function if the input name is "pinCode"
+    if (name === "pinCode") {
+      const locationData = await fetchCityAndState(value);
+      if (locationData) {
+        setFunction((prev) => ({
+          ...prev,
+          city: locationData.city,
+          state: locationData.state,
+        }));
+      }
+    }
   };
 
   const handleFileChange = (e) => {
@@ -222,10 +238,10 @@ const LAPBT = ({ mobile }) => {
             { label: "Name as per PAN", name: "username" },
             { label: "Phone Number", name: "mobile" },
             { label: "Required Loan Amount", name: "loanAmount" },
+            { label: "Pin Code", name: "pinCode" },
             { label: "State", name: "state" },
             { label: "City", name: "city" },
             { label: "Present Address", name: "presentAddress" },
-            { label: "Pin Code", name: "pinCode" },
             { label: "Email", name: "email" }
           ].map(({ label, name }) => (
             <div key={name}>
@@ -269,9 +285,9 @@ const LAPBT = ({ mobile }) => {
             // { label: "Company", name: "company" },
             { label: "Company Name", name: "companyName" },
             { label: "Company Address", name: "companyAddress" },
+            { label: "Pin Code", name: "pinCode" },
             { label: "State", name: "state" },
             { label: "City", name: "city" },
-            { label: "Pin Code", name: "pinCode" },
             { label: "Office Email", name: "officeEmail" },
             { label: "Monthly Net Credit Salary", name: "monthlyNetCreditSalary" },
             { label: "Salary Bank Account", name: "salaryBankAccount" },

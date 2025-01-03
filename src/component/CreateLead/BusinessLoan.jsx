@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosInstance from "../axiosInstance";
+import { fetchCityAndState } from "../fetchCityAndState";
 
 const BusinessLoan = ({ mobile }) => {
 
@@ -34,8 +35,6 @@ const BusinessLoan = ({ mobile }) => {
     panCard: null,
     aadharfront: null,
     aadharback: null,
-    propertyChain: null,
-    map: null,
     gstMsmeCerificate: null,
     itrComution1: null,
     itrComution2: null,
@@ -44,9 +43,20 @@ const BusinessLoan = ({ mobile }) => {
     oneYearSavingAccountStatement: null,
   });
 
-  const handleInputChange = (e, setFunction) => {
+  const handleInputChange = async (e, setFunction) => {
     const { name, value } = e.target;
     setFunction((prev) => ({ ...prev, [name]: value }));
+    // Call the fetchCityAndState function if the input name is "pinCode"
+    if (name === "pinCode") {
+      const locationData = await fetchCityAndState(value);
+      if (locationData) {
+        setFunction((prev) => ({
+          ...prev,
+          city: locationData.city,
+          state: locationData.state,
+        }));
+      }
+    }
   };
 
   const handleFileChange = (e) => {
@@ -119,8 +129,6 @@ const BusinessLoan = ({ mobile }) => {
         panCard: null,
         aadharfront: null,
         aadharback: null,
-        propertyChain: null,
-        map: null,
         gstMsmeCerificate: null,
         itrComution1: null,
         itrComution2: null,
@@ -147,10 +155,10 @@ const BusinessLoan = ({ mobile }) => {
             { label: "Phone Number", name: "mobile" },
             // { label: "Profession", name: "profession" },
             { label: "Required Loan Amount", name: "loanAmount" },
+            { label: "Pin Code", name: "pinCode" },
             { label: "State", name: "state" },
             { label: "City", name: "city" },
             { label: "Present Address", name: "presentAddress" },
-            { label: "Pin Code", name: "pinCode" },
             { label: "Email", name: "email" },
           ].map(({ label, name }) => (
             <div key={name}>
@@ -205,9 +213,9 @@ const BusinessLoan = ({ mobile }) => {
           {[
             { label: "Company Name", name: "companyName" },
             { label: "Company Address", name: "companyAddress" },
+            { label: "Pin Code", name: "pinCode" },
             { label: "State", name: "state" },
             { label: "City", name: "city" },
-            { label: "Pin Code", name: "pinCode" },
             { label: "Office Email", name: "officeEmail" },
             { label: "Monthly Net Credit Salary", name: "monthlyNetCreditSalary" },
             { label: "Salary Bank Account", name: "salaryBankAccount" },
@@ -284,8 +292,6 @@ const BusinessLoan = ({ mobile }) => {
             { label: "PAN Card", name: "panCard" },
             { label: "Aadhar Front", name: "aadharfront" },
             { label: "Aadhar Back", name: "aadharback" },
-            { label: "Property Chain", name: "propertyChain" },
-            { label: "Map", name: "map" },
             { label: "GST Msme Cerificate", name: "gstMsmeCerificate" },
             { label: "ITR Comution 1", name: "itrComution1" },
             { label: "ITR Comution 2", name: "itrComution2" },

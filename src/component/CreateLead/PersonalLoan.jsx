@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosInstance from "../axiosInstance";
+import debounce from "lodash.debounce";
 
 const PersonalLoan = ({ mobile }) => {
 
@@ -40,9 +41,37 @@ const PersonalLoan = ({ mobile }) => {
         sevenMonthStatement: null,
     });
 
+    const fetchCityAndState = debounce(async (pinCode, setFunction) => {
+        if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
+            try {
+                const response = await axiosInstance.post(`/api/get-address`, {
+                    pinCode: pinCode,
+                });
+
+                if (response.data?.success) {
+                    const { District, State } = response.data.info;
+                    setFunction((prev) => ({
+                        ...prev,
+                        city: District,
+                        state: State,
+                    }));
+                } else {
+                    console.error("API returned unsuccessful response:", response.data);
+                }
+            } catch (error) {
+                console.error("Error fetching city and state:", error);
+            }
+        }
+    }, 1000); // Debounce delay set to 1 second
+
+
     const handleInputChange = (e, setFunction) => {
         const { name, value } = e.target;
         setFunction((prev) => ({ ...prev, [name]: value }));
+
+        if (name === "pinCode") {
+            fetchCityAndState(value, setFunction);
+        }
     };
 
     const handleFileChange = (e) => {
@@ -139,10 +168,10 @@ const PersonalLoan = ({ mobile }) => {
                         { label: "Phone Number", name: "mobile" },
                         // { label: "Profession", name: "profession" },
                         { label: "Required Loan Amount", name: "loanAmount" },
+                        { label: "Pin Code", name: "pinCode" },
                         { label: "State", name: "state" },
                         { label: "City", name: "city" },
                         { label: "Present Address", name: "presentAddress" },
-                        { label: "Pin Code", name: "pinCode" },
                         { label: "Email", name: "email" },
                     ].map(({ label, name }) => (
                         <div key={name}>
@@ -205,9 +234,9 @@ const PersonalLoan = ({ mobile }) => {
                         // { label: "Company", name: "company" },
                         { label: "Company Name", name: "companyName" },
                         { label: "Company Address", name: "companyAddress" },
+                        { label: "Pin Code", name: "pinCode" },
                         { label: "State", name: "state" },
                         { label: "City", name: "city" },
-                        { label: "Pin Code", name: "pinCode" },
                         { label: "Office Email", name: "officeEmail" },
                         { label: "Monthly Net Credit Salary", name: "monthlyNetCreditSalary" },
                         { label: "Salary Bank Account", name: "salaryBankAccount" },

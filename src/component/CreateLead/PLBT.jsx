@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosInstance from "../axiosInstance";
+import { fetchCityAndState } from "../fetchCityAndState";
 
 const PLBT = ({ mobile }) => {
 
@@ -45,10 +46,26 @@ const PLBT = ({ mobile }) => {
         closerLetter3: null,
     });
 
-    const handleInputChange = (e, setFunction) => {
+    // const handleInputChange = (e, setFunction) => {
+    //     const { name, value } = e.target;
+    //     setFunction((prev) => ({ ...prev, [name]: value }));
+    // };
+    const handleInputChange = async (e, setFunction) => {
         const { name, value } = e.target;
         setFunction((prev) => ({ ...prev, [name]: value }));
+        // Call the fetchCityAndState function if the input name is "pinCode"
+        if (name === "pinCode") {
+            const locationData = await fetchCityAndState(value);
+            if (locationData) {
+                setFunction((prev) => ({
+                    ...prev,
+                    city: locationData.city,
+                    state: locationData.state,
+                }));
+            }
+        }
     };
+
 
     const handleFileChange = (e) => {
         const { name, files } = e.target;
@@ -92,13 +109,6 @@ const PLBT = ({ mobile }) => {
                 loans: runningLoans,
             })
         );
-
-        // Object.keys(documents).forEach((key) => {
-        //     if (documents[key]) {
-        //         formData.append(key, documents[key]);
-        //     }
-        // });
-
 
         try {
             // await axiosInstance.post("/subAdmin/personal-loan-lead/6306192582", formData);

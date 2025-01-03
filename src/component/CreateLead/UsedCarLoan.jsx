@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axiosInstance from "../axiosInstance";
+import { fetchCityAndState } from "../fetchCityAndState";
 
 const UsedCarLoan = ({ mobile }) => {
   const [personalDetails, setPersonalDetails] = useState({
@@ -54,9 +55,20 @@ const UsedCarLoan = ({ mobile }) => {
     oneYearSavingAccountStatement: null,
   });
 
-  const handleInputChange = (e, setFunction) => {
+  const handleInputChange = async (e, setFunction) => {
     const { name, value } = e.target;
     setFunction((prev) => ({ ...prev, [name]: value }));
+    // Call the fetchCityAndState function if the input name is "pinCode"
+    if (name === "pinCode") {
+      const locationData = await fetchCityAndState(value);
+      if (locationData) {
+        setFunction((prev) => ({
+          ...prev,
+          city: locationData.city,
+          state: locationData.state,
+        }));
+      }
+    }
   };
 
   const handleFileChange = (e) => {
@@ -214,10 +226,10 @@ const UsedCarLoan = ({ mobile }) => {
             { label: "Name as per PAN", name: "username" },
             { label: "Phone Number", name: "mobile" },
             { label: "Required Loan Amount", name: "loanAmount" },
+            { label: "Pin Code", name: "pinCode" },
             { label: "State", name: "state" },
             { label: "City", name: "city" },
             { label: "Present Address", name: "presentAddress" },
-            { label: "Pin Code", name: "pinCode" },
             { label: "Email", name: "email" }
           ].map(({ label, name }) => (
             <div key={name}>
@@ -261,9 +273,9 @@ const UsedCarLoan = ({ mobile }) => {
             // { label: "Company", name: "company" },
             { label: "Company Name", name: "companyName" },
             { label: "Company Address", name: "companyAddress" },
+            { label: "Pin Code", name: "pinCode" },
             { label: "State", name: "state" },
             { label: "City", name: "city" },
-            { label: "Pin Code", name: "pinCode" },
             { label: "Office Email", name: "officeEmail" },
             { label: "Monthly Net Credit Salary", name: "monthlyNetCreditSalary" },
             { label: "Salary Bank Account", name: "salaryBankAccount" },
@@ -300,7 +312,7 @@ const UsedCarLoan = ({ mobile }) => {
                 type="text"
                 name={name}
                 value={carDetails[name]}
-                onChange={(e) => handleInputChange(e, setcarDetails)}
+                onChange={(e) => handleInputChange(e, setCarDetails)}
                 className="p-2 border border-gray-300 rounded-md w-full"
               />
             </div>
