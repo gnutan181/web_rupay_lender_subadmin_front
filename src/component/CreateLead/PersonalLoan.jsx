@@ -41,6 +41,8 @@ const PersonalLoan = ({ mobile }) => {
         sevenMonthStatement: null,
     });
 
+    const [loading, setLoading] = useState(false); // New loading state
+
     const fetchCityAndState = debounce(async (pinCode, setFunction) => {
         if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
             try {
@@ -99,6 +101,7 @@ const PersonalLoan = ({ mobile }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true); // Start loader
         const formData = new FormData();
         Object.keys(documents).forEach((key) => {
             if (documents[key]) {
@@ -153,6 +156,8 @@ const PersonalLoan = ({ mobile }) => {
         } catch (error) {
             console.error("Error submitting form", error);
             alert("Failed to submit the form. Please try again.");
+        } finally {
+            setLoading(false); // Stop loader
         }
     };
 
@@ -196,14 +201,7 @@ const PersonalLoan = ({ mobile }) => {
                         onChange={(e) => handleInputChange(e, setPersonalDetails)}
                         className="p-2 border border-gray-300 rounded-md w-full bg-white"
                     >
-                        <option value="">Select Profession</option>
-                        <option value="salaried">Salaried</option>
-                        <option value="self-employed">Self-Employed</option>
-                        <option value="business-owner">Business Owner</option>
-                        <option value="freelancer">Freelancer</option>
-                        <option value="student">Student</option>
-                        <option value="retired">Retired</option>
-                        <option value="others">Others</option>
+                        <option value="salaried" selected disabled>Job</option>
                     </select>
                 </div>
 
@@ -331,7 +329,7 @@ const PersonalLoan = ({ mobile }) => {
                         </div>
                     ))}
                 </div>
-
+                {loading && <div className="loader mt-4">Submitting, please wait...</div>} {/* Loader */}
                 <button type="submit" className="px-4 py-2 bg-[#F89D28] text-white rounded-md mt-6">
                     Submit
                 </button>

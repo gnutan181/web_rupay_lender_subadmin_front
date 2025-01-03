@@ -198,14 +198,7 @@ const PLBT = ({ mobile }) => {
                         onChange={(e) => handleInputChange(e, setPersonalDetails)}
                         className="p-2 border border-gray-300 rounded-md w-full bg-white"
                     >
-                        <option value="">Select Profession</option>
-                        <option value="salaried">Salaried</option>
-                        <option value="self-employed">Self-Employed</option>
-                        <option value="business-owner">Business Owner</option>
-                        <option value="freelancer">Freelancer</option>
-                        <option value="student">Student</option>
-                        <option value="retired">Retired</option>
-                        <option value="others">Others</option>
+                        <option value="salaried" selected disabled>Job</option>
                     </select>
                 </div>
 
