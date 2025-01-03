@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { FaMoneyBillWave, FaCreditCard, FaMotorcycle } from "react-icons/fa";
 import { IoIosHome } from "react-icons/io";
 import { BiSolidBusiness } from "react-icons/bi";
 import { MdMapsHomeWork, MdOutlineAddHomeWork } from "react-icons/md";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { IoCarSport } from "react-icons/io5";
-import { GiWallet } from "react-icons/gi";
+// import { GiWallet } from "react-icons/gi";
 
 import PersonalLoan from "./PersonalLoan";
 import PLBT from "./PLBT";
@@ -16,7 +16,7 @@ import LAPBT from "./LAPBT";
 import BusinessLoan from "./BusinessLoan";
 import UsedCarLoan from "./UsedCarLoan";
 import UsedCarLoanBT from "./UsedCarLoanBT";
-import CreditCard from "./CreditCard";
+// import CreditCard from "./CreditCard";
 import MotorInsurance from "./MotorInsurance";
 import axiosInstance from "../axiosInstance";
 
