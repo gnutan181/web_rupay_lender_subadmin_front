@@ -41,6 +41,7 @@ import ServiceDetails from "../component/CAService/ServiceDetails";
 import LoanPaymentHistory from '../component/PaymentHistory/LoanPaymentHistory';
 // import CardPaymentHistory from '../component/PaymentHistory/CardPaymentHistory'
 import Profile from "../component/Profile/Profile";
+import CreateLead from "../component/CreateLead/CreateLead";
 
 const User = React.lazy(() => import("../component/User/User"));
 const UserDetails = React.lazy(() => import("../component/User/UserDetails"));
@@ -105,7 +106,13 @@ const Routers = () => {
                 <Route path="/user-details/:userId" element={<UserDetails />} />
               </>
             )}
+            {subAdminRole === "manager" && (
+              <>
+                <Route path="/create-lead" element={<CreateLead />} />
+              </>
+            )}
 
+            
             {department.includes("personal loan") && (
               <>
                 <Route
