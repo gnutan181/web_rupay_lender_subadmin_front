@@ -78,9 +78,9 @@ const LoanDetails = () => {
         `/subAdmin/get-status-history/${loanItemId}`
       );
       // setLoanData(res.data?.loan?.details);
-      setworkHistory(res.data.statusHistory);
+      setworkHistory(res?.data?.statusHistory);
 
-      setLoanId(res.data?.loan?._id);
+      setLoanId(res?.data?.loan?._id);
     } catch (error) {
       console.error("Error fetching loan data:", error);
     }
@@ -100,7 +100,7 @@ const LoanDetails = () => {
   useEffect(() => {
     fetchLoanData();
     fetchworkHistory();
-  }, [fetchLoanData,fetchworkHistory]);
+  }, [fetchLoanData,fetchworkHistory,showModal]);
 
   const downloadPDF = async () => {
     try {
@@ -351,13 +351,13 @@ const LoanDetails = () => {
                   )
                 }
                 {
-                  item?.disbustAmount && (
+                  item?.disburstAmount && (
                     <li className=" col-start-4 col-end-5 ">
                   <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
-                    Disbust Amount
+                    Disburst Amount
                   </h5>
                   <p className="font-normal text-xs md:text-sm text-[#3B3935]">
-                    {item?.disbustAmount || "N/A"}
+                    {item?.disburstAmount || "N/A"}
                   </p>
                 </li>
                   )

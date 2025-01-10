@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import axiosInstance from "../axiosInstance";
 import { fetchCityAndState } from "../fetchCityAndState";
 import debounce from "lodash.debounce";
@@ -68,7 +68,7 @@ const BusinessLoan = ({ mobile }) => {
     if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
       try {
         const response = await axiosInstance.get(`/subAdmin/search`, {
-          params: { pincode: pinCode, type: "personal loan" },
+          params: { pincode: pinCode, type: "business loan" },
         });
         if (Array.isArray(response.data)) {
           setRightBoxData(response.data); // Directly use the array as rightBoxData
