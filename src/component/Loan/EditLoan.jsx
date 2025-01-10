@@ -16,7 +16,7 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
   const { loanItemId } = useParams();
 
   const [statusComplete, setStatusComplete] = useState({
-    disbustAmount: null,
+    disburstAmount: null,
     bank: null,
   });
 
@@ -29,7 +29,7 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
   async function FetchUpdateStatus(data) {
     console.log(data)
     try {
-      const response = await axiosInstance.put(
+      await axiosInstance.put(
         `/subAdmin/update-status/${loanItemId}`,
         data
       );
@@ -69,7 +69,7 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
       if (selectedValue === "Completed") {
         data = {
           loanStatus: selectedValue,
-          disbustAmount: statusComplete.disbustAmount,
+          disburstAmount: statusComplete.disburstAmount,
           bank: statusComplete.bank,
         };
       } else if (selectedValue === "Cancel" || selectedValue === "Process") {
@@ -100,7 +100,7 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
     setTextFieldValue("");
 
     setStatusComplete({
-      disbustAmount: null,
+      disburstAmount: null,
       bank: null,
     });
 
@@ -247,14 +247,14 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
                     <div className="w-[50%] mt-[2rem] flex flex-col gap-4">
                       <input
                         type="number"
-                        value={statusComplete.disbustAmount}
+                        value={statusComplete.disburstAmount}
                         onChange={(e) =>
                           setStatusComplete({
                             ...statusComplete,
-                            disbustAmount: e.target.value,
+                            disburstAmount: e.target.value,
                           })
                         }
-                        placeholder="Enter your Disbust Amount"
+                        placeholder="Enter your Disburst Amount"
                         className="w-full outline-none border border-black rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-2"
                       />
 
