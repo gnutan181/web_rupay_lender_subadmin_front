@@ -254,7 +254,6 @@ const PLBT = ({ mobile }) => {
                     </div>
                 </div>
 
-
                 {/* Professional Details */}
                 <h2 className="text-xl font-bold mt-6 mb-4">Professional Details</h2>
                 {/*Company type */}
