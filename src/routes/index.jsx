@@ -42,6 +42,7 @@ import LoanPaymentHistory from '../component/PaymentHistory/LoanPaymentHistory';
 // import CardPaymentHistory from '../component/PaymentHistory/CardPaymentHistory'
 import Profile from "../component/Profile/Profile";
 import CreateLead from "../component/CreateLead/CreateLead";
+import MovedLead from "../component/CreateLead/MovedLead";
 
 const User = React.lazy(() => import("../component/User/User"));
 const UserDetails = React.lazy(() => import("../component/User/UserDetails"));
@@ -100,6 +101,7 @@ const Routers = () => {
           <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
+
             {subAdminRole === "manager" && (
               <>
                 <Route path="/user" element={<User />} />
@@ -109,10 +111,11 @@ const Routers = () => {
             {subAdminRole === "manager" && (
               <>
                 <Route path="/create-lead" element={<CreateLead />} />
+                <Route path="/moved-lead" element={<MovedLead />} />
               </>
             )}
 
-            
+
             {department.includes("personal loan") && (
               <>
                 <Route
@@ -159,71 +162,70 @@ const Routers = () => {
             <Route path="/:loanType/:loanItemId" element={<LoanDetails />} />
 
 
-
             {/* ca services */}
-            
-            <Route 
-                        path='/gst-registration'
-                        element = {<GstRegistration/>}
-                    />
-                    <Route 
-                        path='/gst-incometaxreturn'
-                        element={<GstIncomeTaxReturn/>}
-                    />
-                    <Route 
-                        path='/gst-companyregistration'
-                        element={<GetCompanyRegistration/>}
-                    />
 
-<Route 
-                        path='/new-pan-card'
-                        element={<NewPanCard/>}
-                    />
-                    <Route 
-                        path='/duplicate-pan-card'
-                        element={<DuplicatePanCard/>}
-                    />
-                    <Route 
-                        path='/correction-pan-card'
-                        element={<CorrectionPanCard/>}
-                    />
-                    <Route 
-                        path='/food-license'
-                        element={<FoodLicense/>}
-                    />
-                    <Route 
-                        path= '/trademark'
-                        element={<Trademark/>}
-                    />
-                    <Route 
-                        path= '/dsc'
-                        element={<DSC/>}
-                    />
-                    <Route 
-                        path='/msme'
-                        element={<Msme/>}
-                    />  
-                    
+            <Route
+              path='/gst-registration'
+              element={<GstRegistration />}
+            />
+            <Route
+              path='/gst-incometaxreturn'
+              element={<GstIncomeTaxReturn />}
+            />
+            <Route
+              path='/gst-companyregistration'
+              element={<GetCompanyRegistration />}
+            />
 
-                    <Route 
-                        path= '/ca-service-details/:serviceType/:serviceItemId'
-                        element={<ServiceDetails/>}
-                    />
+            <Route
+              path='/new-pan-card'
+              element={<NewPanCard />}
+            />
+            <Route
+              path='/duplicate-pan-card'
+              element={<DuplicatePanCard />}
+            />
+            <Route
+              path='/correction-pan-card'
+              element={<CorrectionPanCard />}
+            />
+            <Route
+              path='/food-license'
+              element={<FoodLicense />}
+            />
+            <Route
+              path='/trademark'
+              element={<Trademark />}
+            />
+            <Route
+              path='/dsc'
+              element={<DSC />}
+            />
+            <Route
+              path='/msme'
+              element={<Msme />}
+            />
 
-                       {/* payment History */}
 
-                    
-                       <Route 
-                        path='payment/loan-payment-history'
-                        element={<LoanPaymentHistory/>}
-                    />
-                    <Route 
-                        path='profile'
-                        element={<Profile/>}
-                    />
+            <Route
+              path='/ca-service-details/:serviceType/:serviceItemId'
+              element={<ServiceDetails />}
+            />
+
+            {/* payment History */}
+
+
+            <Route
+              path='payment/loan-payment-history'
+              element={<LoanPaymentHistory />}
+            />
+            <Route
+              path='profile'
+              element={<Profile />}
+            />
 
           </Routes>
-          
+
         </Suspense>
       </div>
     </div>

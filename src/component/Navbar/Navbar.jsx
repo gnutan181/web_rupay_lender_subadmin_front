@@ -144,10 +144,11 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
         const response = await axiosInstance.get(`/subAdmin/search`, {
           params: { pincode: pinCode, type: productType || "personal loan" },
         });
-        if (Array.isArray(response.data)) {
-          setRightBoxData(response.data);
+        console.log(response)
+        if ((response?.data?.success)) {
+          setRightBoxData(response?.data?.results);
         } else {
-          console.error("Unexpected API response format:", response.data);
+          console.error("Unexpected API response format:", response?.data);
           setRightBoxData(null);
         }
       } catch (error) {
@@ -217,6 +218,8 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
           >
             <IoLogOut className="text-xl md:text-2xl text-[#F89D28]" />
           </div>
+
+
 
         </div>
       </div>

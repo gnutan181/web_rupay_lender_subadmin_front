@@ -142,6 +142,17 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
                     </NavLink>
                   </li>
 
+                  <li className="m-4">
+                    <NavLink
+                      to="/moved-lead"
+                      className={({ isActive }) =>
+                        isActive ? 'bg-[#F89D28] block p-2 text-[#FFFFFF] font-medium  text-base md:text-lg rounded-md' : 'block p-2 hover:bg-[#f89e282a] text-[#FFFFFF] font-medium  text-base md:text-lg'
+                      }
+                    >
+                      Moved Lead
+                    </NavLink>
+                  </li>
+
 
                   <li className="m-4 text-[#FFFFFF] font-medium  text-base md:text-lg">
                     <Dropdown title="Payment History">
