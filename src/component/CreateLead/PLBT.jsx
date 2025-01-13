@@ -72,23 +72,24 @@ const PLBT = ({ mobile }) => {
     // in the personal details
     const [rightBoxData, setRightBoxData] = useState(null);
     const fetchRightBoxData = debounce(async (pinCode) => {
-        if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
-            try {
+        try {
+            if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
                 const response = await axiosInstance.get(`/subAdmin/search`, {
                     params: { pincode: pinCode, type: "personal loan" },
                 });
-                if (Array.isArray(response.data)) {
-                    setRightBoxData(response.data); // Directly use the array as rightBoxData
+                if (response?.data?.success) {
+                    setRightBoxData(response?.data?.results); // Directly use the array as rightBoxData
                 } else {
-                    console.error("Unexpected API response format:", response.data);
+                    console.error("Unexpected API response format:", response?.data);
                     setRightBoxData(null); // Clear data if format is incorrect
                 }
-            } catch (error) {
-                console.error("Error fetching right box data:", error);
-                setRightBoxData(null); // Clear data on error
+            } else {
+                setRightBoxData(null); // Clear data if pinCode is invalid
             }
-        } else {
-            setRightBoxData(null); // Clear data if pinCode is invalid
+        } catch (error) {
+            console.error("Error fetching right box data:", error);
+            console.log(error.message)
+            setRightBoxData(null); // Clear data on error
         }
     }, 1000);
 
@@ -191,7 +192,7 @@ const PLBT = ({ mobile }) => {
 
                 {/* Personal Details */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Left dise form  */}
+                    {/* Left side form  */}
                     <div>
                         <h2 className="text-xl font-bold mb-4">Personal Details</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
