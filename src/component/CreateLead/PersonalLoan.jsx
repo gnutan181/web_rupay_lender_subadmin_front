@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import axiosInstance from "../axiosInstance";
 import debounce from "lodash.debounce";
+import PropTypes from 'prop-types';
 
 const PersonalLoan = ({ mobile }) => {
 
@@ -436,5 +437,8 @@ const PersonalLoan = ({ mobile }) => {
         </>
     );
 };
-
+PersonalLoan.propTypes = {
+    mobile: PropTypes.string.isRequired,  // 'name' must be a string and is required
+              // 'age' must be a number, optional
+  };
 export default PersonalLoan;

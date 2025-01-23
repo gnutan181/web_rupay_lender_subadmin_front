@@ -39,7 +39,7 @@ import DSC from "../component/CAService/DSC";
 import Msme from "../component/CAService/Msme";
 import ServiceDetails from "../component/CAService/ServiceDetails";
 import LoanPaymentHistory from '../component/PaymentHistory/LoanPaymentHistory';
-// import CardPaymentHistory from '../component/PaymentHistory/CardPaymentHistory'
+import CardPaymentHistory from '../component/PaymentHistory/CardPaymentHistory'
 import Profile from "../component/Profile/Profile";
 import CreateLead from "../component/CreateLead/CreateLead";
 import MovedLead from "../component/CreateLead/MovedLead";
@@ -218,6 +218,10 @@ const Routers = () => {
             <Route
               path='payment/loan-payment-history'
               element={<LoanPaymentHistory />}
+            />
+               <Route
+              path='payment/card-payment-history'
+              element={<CardPaymentHistory />}
             />
             <Route
               path='profile'

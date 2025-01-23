@@ -144,7 +144,7 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
         const response = await axiosInstance.get(`/subAdmin/search`, {
           params: { pincode: pinCode, type: productType || "personal loan" },
         });
-        console.log(response)
+        // console.log(response)
         if ((response?.data?.success)) {
           setRightBoxData(response?.data?.results);
         } else {
@@ -162,13 +162,21 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
 
   const handleToggleBox = () => {
     setShowBox1(!showBox1);
-    setRightBoxData(null); // Clear the second box when toggling
+    setRightBoxData(null); 
   };
 
   const handleSearch = () => {
     if (pinCode && productType) {
       fetchRightBoxData(pinCode);
     }
+  
+    setTimeout(() => {
+      setShowBox1(!showBox1);
+      setRightBoxData(null);
+      setPinCode("")
+      setProductType("")
+
+    }, 10000);
   };
 
   return (
@@ -202,7 +210,7 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
             onClick={handleToggleBox}
             className="px-4 py-2 bg-[#F89D28] text-white rounded-md"
           >
-            {showBox1 ? "Close Banks" : "See Banks"}
+            {showBox1 ? "Close Banks" : "Search Pincode"}
           </button>
 
           <div
@@ -242,7 +250,7 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
               placeholder="Enter Pincode"
               value={pinCode}
               onChange={(e) => setPinCode(e.target.value)}
-              className="border p-2 rounded-md w-1/2"
+              className="border p-2 rounded-md w-1/2" 
             />
             <select
               value={productType}
@@ -251,15 +259,15 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
             >
               <option value="">Select Product</option>
               <option value="personal loan">Personal Loan</option>
-              <option value="personal loan balance transfer">Personal Loan BT</option>
+              {/* <option value="personal loan balance transfer">Personal Loan BT</option> */}
               <option value="home loan">Home Loan</option>
-              <option value="home loan balance transfer">Home Loan BT</option>
+              {/* <option value="home loan balance transfer">Home Loan BT</option> */}
               <option value="business loan">Business Loan</option>
               <option value="loan against property">Loan Against Property</option>
-              <option value="loan against property bt">Loan Against Property BT</option>
+              {/* <option value="loan against property bt">Loan Against Property BT</option> */}
               <option value="used car loan">Used Car Loan</option>
-              <option value="used car loan bt">Used Car Loan BT</option>
-              <option value="home loan">Motor Insurance</option>
+              {/* <option value="used car loan bt">Used Car Loan BT</option> */}
+              {/* <option value="home loan">Motor Insurance</option> */}
               {/* Add more options as needed */}
             </select>
             <button

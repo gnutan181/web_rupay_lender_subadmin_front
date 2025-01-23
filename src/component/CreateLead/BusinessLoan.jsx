@@ -43,7 +43,6 @@ const BusinessLoan = ({ mobile }) => {
     oneBankStatementCurrentAccount: null,
     oneYearSavingAccountStatement: null,
   });
-
   const handleInputChange = async (e, setFunction) => {
     const { name, value } = e.target;
     setFunction((prev) => ({ ...prev, [name]: value }));
@@ -60,9 +59,7 @@ const BusinessLoan = ({ mobile }) => {
       }
     }
   };
-
   // in the personal details
-
   const [rightBoxData, setRightBoxData] = useState(null);
   const fetchRightBoxData = debounce(async (pinCode) => {
     if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
@@ -84,7 +81,6 @@ const BusinessLoan = ({ mobile }) => {
       setRightBoxData(null); // Clear data if pinCode is invalid
     }
   }, 1000);
-
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     setDocuments((prev) => ({ ...prev, [name]: files[0] }));
@@ -218,8 +214,8 @@ const BusinessLoan = ({ mobile }) => {
               </label>
             </div>
           </div>
-
           {/* Right Side - Box */}
+
           <div className="border border-gray-300 rounded-md p-4 shadow-md">
             <h3 className="text-lg font-bold mb-3">Bank Names</h3>
             {rightBoxData ? (

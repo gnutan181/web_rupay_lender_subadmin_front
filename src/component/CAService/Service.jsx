@@ -12,10 +12,10 @@ import { SearchContext } from "../../context/SearchContext";
 
 const Service = ({ serviceType }) => {
 
-    console.log('we are in services pages')
+    // console.log('we are in services pages')
   const { searchValue } = useContext(SearchContext);
 
-  console.log(serviceType)
+  // console.log(serviceType)
 
   const navigate = useNavigate();
 
@@ -83,7 +83,7 @@ const Service = ({ serviceType }) => {
       const res = await axiosInstance.get(`${apiEndpoints[serviceType]}`);
     // const res = await axiosInstance.get(`/admin/get-loans/${apiEndpoints[loanType]}`);
     //   const res = await axiosInstance.get(`/ca/${serviceType}`);
-      console.log(res)
+      // console.log(res)
       setLoanData(res.data.details);
     } catch (error) {
       console.error("Error fetching loan data:", error);

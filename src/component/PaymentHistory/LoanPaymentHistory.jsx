@@ -60,9 +60,9 @@ const LoanPaymentHistory = () => {
 
     // Determine API URL based on payment status
     if (status === "Paid") {
-      apiUrl = "/loans/get-paid-loan";
+      apiUrl = "/admin/get-paid-loan-payment";
     } else if (status === "Unpaid") {
-      apiUrl = "/loans/get-unpaid-loan";
+      apiUrl = "/admin/get-unpaid-loan-payment";
     }
 
     const { data } = await axiosInstance.get(apiUrl);

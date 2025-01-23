@@ -89,7 +89,7 @@ const Profile = () => {
           </h5>
 
           <div className="flex gap-2">
-            {console.log(profileData?.department)}
+            {/* {console.log(profileData?.department)} */}
             {profileData?.department &&
               profileData?.department.length > 0 &&
               profileData?.department.map((item, index) => {

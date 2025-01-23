@@ -333,6 +333,7 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { SearchContext } from "../../context/SearchContext";
+import PropTypes from 'prop-types';
 
 const Loan = ({ loanType }) => {
   const { searchValue } = useContext(SearchContext);
@@ -596,5 +597,7 @@ const Loan = ({ loanType }) => {
     </div>
   );
 };
-
+Loan.propTypes = {
+  loanType: PropTypes.string, 
+};
 export default Loan;

@@ -11,7 +11,7 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
   const [selectedLoan, setSelectedLoan] = useState([]);
   const [textFieldValue, setTextFieldValue] = useState("");
 
-  console.log(subAdminPermission);
+  // console.log(subAdminPermission);
 
   const { loanItemId } = useParams();
 
@@ -27,7 +27,7 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   async function FetchUpdateStatus(data) {
-    console.log(data)
+    // console.log(data)
     try {
       await axiosInstance.put(
         `/subAdmin/update-status/${loanItemId}`,

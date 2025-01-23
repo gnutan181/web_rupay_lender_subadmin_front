@@ -11,16 +11,18 @@ import { FaEdit } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import { subAdminPermission } from "../../hooks/useGetDepartment";
+import axios from "axios";
 
 const LoanDetails = () => {
   const { loanType, loanItemId } = useParams();
   const [loanData, setLoanData] = useState(null);
+  const [companyName,setCompanyName] = useState("")
   const [openViewDoc, setOpenViewDoc] = useState(false);
   const [DocImage, setDocImage] = useState();
   const [workHistory, setworkHistory] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [loanId, setLoanId] = useState("");
-
+  const [companyGrade,setCompanyGrade] = useState("")
   const documentLabel = {
     panCard: "Pan Card",
     aadharfront: "Aadhar Front",
@@ -92,15 +94,30 @@ const LoanDetails = () => {
         `/subAdmin/get-single-loan/${loanItemId}`
       );
       setLoanData(res.data?.loan?.details);
+      setCompanyName(res.data?.loan?.details?.professionalDetail?.companyName)
       setLoanId(res.data?.loan?._id);
     } catch (error) {
       console.error("Error fetching loan data:", error);
     }
   },[loanItemId]);
+
+  const getCompanyGrade = useCallback(async()=>{
+  //  console.log(companyName);
+    const getGrade = await axiosInstance.get(`/subAdmin/get-grade/${companyName}`)
+    // console.log(getGrade)
+    if(getGrade?.data?.success){
+      setCompanyGrade(getGrade?.data?.grade[0]?.companyCategory)
+    }
+  },[companyName])
+  // console.log(companyGrade)
   useEffect(() => {
     fetchLoanData();
     fetchworkHistory();
-  }, [fetchLoanData,fetchworkHistory,showModal]);
+    if(companyName.length != 0){
+
+      getCompanyGrade();
+    }
+  }, [fetchLoanData,fetchworkHistory,showModal,companyName,getCompanyGrade]);
 
   const downloadPDF = async () => {
     try {
@@ -369,6 +386,40 @@ const LoanDetails = () => {
               </div>
             </div>
           ))}
+      </div>
+      <div className="border border-[#A3A3A380] rounded-md my-[1rem] p-6">
+        <h4 className="font-semibold text-base md:text-lg text-[#3B3935] mb-2">
+        Company catagory
+        </h4>
+        {companyName &&
+            <div >
+              <ul className="grid grid-cols-4 gap-4">
+                <li className=" col-start-1 col-end-2 ">
+                  <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
+                 Company Name               
+                   </h5>
+                  <p className="font-normal text-xs md:text-sm text-[#3B3935]">
+                    {companyName? companyName  : "N/A"}
+                  </p>
+                </li>
+                <li className=" col-start-2 col-end-3 ">
+                  <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
+                    Grade
+                  </h5>
+                  <p className="font-normal text-xs md:text-sm text-[#3B3935]">
+                  {companyGrade? companyGrade  : "Not found in our list"}
+                  </p>
+                </li>
+             
+            
+            
+                
+              </ul>
+              <div className="my-[1rem]">
+                <hr />
+              </div>
+            </div>
+      }
       </div>
       {loanData && (
         <>

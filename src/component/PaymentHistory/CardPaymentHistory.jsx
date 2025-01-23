@@ -61,9 +61,9 @@ const CardPaymentHistory = () => {
 
     // Determine API URL based on payment status
     if (status === "Paid") {
-      apiUrl = "/card/get-paid-card";
+      apiUrl = "/admin/get-paid-card-payment";
     } else if (status === "Unpaid") {
-      apiUrl = "/card/get-unpaid-card";
+      apiUrl = "/admin/get-unpaid-card-payment";
     }
 
     const { data } = await axiosInstance.get(apiUrl);
@@ -98,7 +98,7 @@ const CardPaymentHistory = () => {
   const [showpaymentModal, setShowPaymentModal] = useState(false);
 
   const submitAmount = async(payOut) => {
-    console.log(payOut)
+    // console.log(payOut)
     await FetchUpdateRate(payOut)
 
     fetchData();
