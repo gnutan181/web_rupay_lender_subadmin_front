@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import axiosInstance from "../axiosInstance";
 import { fetchCityAndState } from "../fetchCityAndState";
 import debounce from "lodash.debounce";
@@ -61,24 +61,27 @@ const BusinessLoan = ({ mobile }) => {
   };
   // in the personal details
   const [rightBoxData, setRightBoxData] = useState(null);
+
   const fetchRightBoxData = debounce(async (pinCode) => {
-    if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
-      try {
+
+    try {
+      if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
         const response = await axiosInstance.get(`/subAdmin/search`, {
           params: { pincode: pinCode, type: "business loan" },
         });
-        if (Array.isArray(response.data)) {
-          setRightBoxData(response.data); // Directly use the array as rightBoxData
+        if (response?.data?.success) {
+          setRightBoxData(response?.data?.results); // Directly use the array as rightBoxData
         } else {
-          console.error("Unexpected API response format:", response.data);
+          console.error("Unexpected API response format:", response?.data);
           setRightBoxData(null); // Clear data if format is incorrect
         }
-      } catch (error) {
-        console.error("Error fetching right box data:", error);
-        setRightBoxData(null); // Clear data on error
+      } else {
+        setRightBoxData(null); // Clear data if pinCode is invalid
       }
-    } else {
-      setRightBoxData(null); // Clear data if pinCode is invalid
+    } catch (error) {
+      console.error("Error fetching right box data:", error);
+      console.log(error.message)
+      setRightBoxData(null); // Clear data on error
     }
   }, 1000);
   const handleFileChange = (e) => {

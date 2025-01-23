@@ -72,23 +72,25 @@ const PersonalLoan = ({ mobile }) => {
     const [rightBoxData, setRightBoxData] = useState(null);
 
     const fetchRightBoxData = debounce(async (pinCode) => {
-        if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
-            try {
+
+        try {
+            if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
                 const response = await axiosInstance.get(`/subAdmin/search`, {
                     params: { pincode: pinCode, type: "personal loan" },
                 });
-                if (Array.isArray(response.data)) {
-                    setRightBoxData(response.data); // Directly use the array as rightBoxData
+                if (response?.data?.success) {
+                    setRightBoxData(response?.data?.results); // Directly use the array as rightBoxData
                 } else {
-                    console.error("Unexpected API response format:", response.data);
+                    console.error("Unexpected API response format:", response?.data);
                     setRightBoxData(null); // Clear data if format is incorrect
                 }
-            } catch (error) {
-                console.error("Error fetching right box data:", error);
-                setRightBoxData(null); // Clear data on error
+            } else {
+                setRightBoxData(null); // Clear data if pinCode is invalid
             }
-        } else {
-            setRightBoxData(null); // Clear data if pinCode is invalid
+        } catch (error) {
+            console.error("Error fetching right box data:", error);
+            console.log(error.message)
+            setRightBoxData(null); // Clear data on error
         }
     }, 1000);
 
@@ -235,7 +237,7 @@ const PersonalLoan = ({ mobile }) => {
                         </select>
                     </label>
                 </div> */}
-                
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Left Side - Form */}
                     <div>
@@ -290,10 +292,10 @@ const PersonalLoan = ({ mobile }) => {
                             <div className="flex flex-wrap gap-2">
                                 {rightBoxData.map((item) => (
                                     <div
-                                        key={item._id}
+                                        key={item?._id}
                                         className="px-4 py-1 bg-gray-100 border border-gray-300 rounded-[1rem] shadow-sm"
                                     >
-                                        {item.bankName}
+                                        {item?.bankName}
                                     </div>
                                 ))}
                             </div>

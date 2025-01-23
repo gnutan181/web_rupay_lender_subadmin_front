@@ -66,23 +66,25 @@ const HomeLoan = ({ mobile }) => {
   const [rightBoxData, setRightBoxData] = useState(null);
 
   const fetchRightBoxData = debounce(async (pinCode) => {
-    if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
-      try {
+
+    try {
+      if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
         const response = await axiosInstance.get(`/subAdmin/search`, {
           params: { pincode: pinCode, type: "home loan" },
         });
-        if (Array.isArray(response.data)) {
-          setRightBoxData(response.data); // Directly use the array as rightBoxData
+        if (response?.data?.success) {
+          setRightBoxData(response?.data?.results); // Directly use the array as rightBoxData
         } else {
-          console.error("Unexpected API response format:", response.data);
+          console.error("Unexpected API response format:", response?.data);
           setRightBoxData(null); // Clear data if format is incorrect
         }
-      } catch (error) {
-        console.error("Error fetching right box data:", error);
-        setRightBoxData(null); // Clear data on error
+      } else {
+        setRightBoxData(null); // Clear data if pinCode is invalid
       }
-    } else {
-      setRightBoxData(null); // Clear data if pinCode is invalid
+    } catch (error) {
+      console.error("Error fetching right box data:", error);
+      console.log(error.message)
+      setRightBoxData(null); // Clear data on error
     }
   }, 1000);
 
@@ -91,6 +93,7 @@ const HomeLoan = ({ mobile }) => {
     setFunction((prev) => ({ ...prev, [name]: value }));
     // Call the fetchCityAndState function if the input name is "pinCode"
     if (name === "pinCode") {
+      fetchRightBoxData(value);
       const locationData = await fetchCityAndState(value);
       if (locationData) {
         setFunction((prev) => ({

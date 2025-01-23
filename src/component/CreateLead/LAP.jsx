@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axiosInstance from "../axiosInstance";
 import { fetchCityAndState } from "../fetchCityAndState";
+import debounce from "lodash.debounce";
 
 const LAP = ({ mobile }) => {
   const [personalDetails, setPersonalDetails] = useState({
@@ -65,6 +66,7 @@ const LAP = ({ mobile }) => {
     setFunction((prev) => ({ ...prev, [name]: value }));
     // Call the fetchCityAndState function if the input name is "pinCode"
     if (name === "pinCode") {
+      fetchRightBoxData(value)
       const locationData = await fetchCityAndState(value);
       if (locationData) {
         setFunction((prev) => ({
@@ -75,6 +77,32 @@ const LAP = ({ mobile }) => {
       }
     }
   };
+
+  // in the personal details
+  const [rightBoxData, setRightBoxData] = useState(null);
+
+  const fetchRightBoxData = debounce(async (pinCode) => {
+
+    try {
+      if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
+        const response = await axiosInstance.get(`/subAdmin/search`, {
+          params: { pincode: pinCode, type: "loan against property" },
+        });
+        if (response?.data?.success) {
+          setRightBoxData(response?.data?.results); // Directly use the array as rightBoxData
+        } else {
+          console.error("Unexpected API response format:", response?.data);
+          setRightBoxData(null); // Clear data if format is incorrect
+        }
+      } else {
+        setRightBoxData(null); // Clear data if pinCode is invalid
+      }
+    } catch (error) {
+      console.error("Error fetching right box data:", error);
+      console.log(error.message)
+      setRightBoxData(null); // Clear data on error
+    }
+  }, 1000);
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
@@ -228,31 +256,56 @@ const LAP = ({ mobile }) => {
     <>
       <h1 className="text-[1.6rem] font-bold mt-10">Loan Against Property</h1>
       <form className="p-6 bg-gray-100" onSubmit={handleSubmit}>
-        <h2 className="text-xl font-bold mb-4">Personal Details</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { label: "Name as per PAN", name: "username" },
-            { label: "Phone Number", name: "mobile" },
-            { label: "Required Loan Amount", name: "loanAmount" },
-            { label: "Pin Code", name: "pinCode" },
-            { label: "State", name: "state" },
-            { label: "City", name: "city" },
-            { label: "Present Address", name: "presentAddress" },
-            { label: "Email", name: "email" }
-          ].map(({ label, name }) => (
-            <div key={name}>
-              <label className="block text-sm font-medium text-gray-700">{label}</label>
-              <input type="text" name={name} value={personalDetails[name]} onChange={(e) => handleInputChange(e, setPersonalDetails)} className="p-2 border border-gray-300 rounded-md w-full" />
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Left Side - Form */}
+          <div>
+            <h2 className="text-xl font-bold mb-4">Personal Details</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { label: "Name as per PAN", name: "username" },
+                { label: "Phone Number", name: "mobile" },
+                { label: "Required Loan Amount", name: "loanAmount" },
+                { label: "Pin Code", name: "pinCode" },
+                { label: "State", name: "state" },
+                { label: "City", name: "city" },
+                { label: "Present Address", name: "presentAddress" },
+                { label: "Email", name: "email" }
+              ].map(({ label, name }) => (
+                <div key={name}>
+                  <label className="block text-sm font-medium text-gray-700">{label}</label>
+                  <input type="text" name={name} value={personalDetails[name]} onChange={(e) => handleInputChange(e, setPersonalDetails)} className="p-2 border border-gray-300 rounded-md w-full" />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="grid-cols-1 mt-3">
-          <label className="block text-sm font-medium text-gray-700">Profession</label>
-          <select name="profession" value={personalDetails.profession} onChange={(e) => handleInputChange(e, setPersonalDetails)} className="p-2 border border-gray-300 rounded-md w-full bg-white">
-            <option value="">Select Profession</option>
-            <option value="job">Job</option>
-            <option value="business">Business</option>
-          </select>
+            <div className="grid-cols-1 mt-3">
+              <label className="block text-sm font-medium text-gray-700">Profession</label>
+              <select name="profession" value={personalDetails.profession} onChange={(e) => handleInputChange(e, setPersonalDetails)} className="p-2 border border-gray-300 rounded-md w-full bg-white">
+                <option value="">Select Profession</option>
+                <option value="job">Job</option>
+                <option value="business">Business</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Right Side - Box */}
+          <div className="border border-gray-300 rounded-md p-4 shadow-md">
+            <h3 className="text-lg font-bold mb-3">Bank Names</h3>
+            {rightBoxData ? (
+              <div className="flex flex-wrap gap-2">
+                {rightBoxData.map((item) => (
+                  <div
+                    key={item._id}
+                    className="px-4 py-1 bg-gray-100 border border-gray-300 rounded-[1rem] shadow-sm"
+                  >
+                    {item.bankName}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500">Enter a valid pin code to see details.</p>
+            )}
+          </div>
         </div>
 
         {/* Professional Details */}
