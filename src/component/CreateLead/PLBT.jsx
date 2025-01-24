@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import axiosInstance from "../axiosInstance";
 import { fetchCityAndState } from "../fetchCityAndState";
 import debounce from "lodash.debounce";

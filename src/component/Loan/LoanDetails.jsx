@@ -11,7 +11,6 @@ import { FaEdit } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import { subAdminPermission } from "../../hooks/useGetDepartment";
-import axios from "axios";
 
 const LoanDetails = () => {
   const { loanType, loanItemId } = useParams();
