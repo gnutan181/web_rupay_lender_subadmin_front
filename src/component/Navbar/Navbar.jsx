@@ -176,7 +176,7 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
       setPinCode("")
       setProductType("")
 
-    }, 10000);
+    }, 30000);
   };
 
   return (

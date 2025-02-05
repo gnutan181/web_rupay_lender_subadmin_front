@@ -43,6 +43,7 @@ import CardPaymentHistory from '../component/PaymentHistory/CardPaymentHistory'
 import Profile from "../component/Profile/Profile";
 import CreateLead from "../component/CreateLead/CreateLead";
 import MovedLead from "../component/CreateLead/MovedLead";
+import Bankers from "../component/CreateLead/Bankers";
 
 const User = React.lazy(() => import("../component/User/User"));
 const UserDetails = React.lazy(() => import("../component/User/UserDetails"));
@@ -219,13 +220,17 @@ const Routers = () => {
               path='payment/loan-payment-history'
               element={<LoanPaymentHistory />}
             />
-               <Route
+            <Route
               path='payment/card-payment-history'
               element={<CardPaymentHistory />}
             />
             <Route
               path='profile'
               element={<Profile />}
+            />
+            <Route
+              path='bankers-info'
+              element={<Bankers />}
             />
 
           </Routes>
