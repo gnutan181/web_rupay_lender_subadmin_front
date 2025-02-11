@@ -11,18 +11,19 @@ import { FaEdit } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa";
 import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import { subAdminPermission } from "../../hooks/useGetDepartment";
+import axios from "axios";
 
 const LoanDetails = () => {
   const { loanType, loanItemId } = useParams();
   // const []
   const [loanData, setLoanData] = useState(null);
-  const [companyName,setCompanyName] = useState("")
+  const [companyName, setCompanyName] = useState("")
   const [openViewDoc, setOpenViewDoc] = useState(false);
   const [DocImage, setDocImage] = useState();
   const [workHistory, setworkHistory] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [loanId, setLoanId] = useState("");
-  const [companyGrade,setCompanyGrade] = useState("")
+  const [companyGrade, setCompanyGrade] = useState("")
   const documentLabel = {
     panCard: "Pan Card",
     aadharfront: "Aadhar Front",
@@ -86,7 +87,7 @@ const LoanDetails = () => {
     } catch (error) {
       console.error("Error fetching loan data:", error);
     }
-  },[loanItemId]);
+  }, [loanItemId]);
   // console.log(workHistory)
   const fetchLoanData = useCallback(async () => {
     try {
@@ -99,25 +100,25 @@ const LoanDetails = () => {
     } catch (error) {
       console.error("Error fetching loan data:", error);
     }
-  },[loanItemId]);
+  }, [loanItemId]);
 
-  const getCompanyGrade = useCallback(async()=>{
-  //  console.log(companyName);
+  const getCompanyGrade = useCallback(async () => {
+    //  console.log(companyName);
     const getGrade = await axiosInstance.get(`/subAdmin/get-grade/${companyName}`)
     // console.log(getGrade)
-    if(getGrade?.data?.success){
+    if (getGrade?.data?.success) {
       setCompanyGrade(getGrade?.data?.grade[0]?.companyCategory)
     }
-  },[companyName])
+  }, [companyName])
   // console.log(companyGrade)
   useEffect(() => {
     fetchLoanData();
     fetchworkHistory();
-    if(companyName.length != 0){
+    if (companyName.length != 0) {
 
       getCompanyGrade();
     }
-  }, [fetchLoanData,fetchworkHistory,showModal,companyName,getCompanyGrade]);
+  }, [fetchLoanData, fetchworkHistory, showModal, companyName, getCompanyGrade]);
 
   const downloadPDF = async () => {
     try {
@@ -282,9 +283,71 @@ const LoanDetails = () => {
     aTag.click();
     aTag.remove();
   };
+
+
   const splitCamelCase = (str) => {
     return str.replace(/([a-z])([A-Z])/g, "$1 $2").toLowerCase();
   };
+
+  // const [bankerInfo, setBankerInfo] = useState(null);
+  // const originalLoanTypeName = loanType;
+  // let cleanedLoanType = originalLoanTypeName.replace('-details', "");
+  // cleanedLoanType = cleanedLoanType.replace(/-/g, " ");
+
+  // useEffect(() => {
+  //   const fetchBankerDetails = async () => {
+  //     try {
+  //       const response = await axiosInstance.get(`/subAdmin/get-banker`, {
+  //         params: {
+  //           pincode: loanData?.personalDetail?.pinCode,
+  //           type: cleanedLoanType,
+  //         },
+  //       });
+
+
+  //       if (response.data.success && response.data.results.length > 0) {
+  //         setBankerInfo(response.data.results[0]);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching banker details:', error);
+  //     }
+  //   };
+
+  //   fetchBankerDetails();
+  // }, [loanData?.personalDetail?.pinCode, cleanedLoanType]);
+
+  const [bankerInfo, setBankerInfo] = useState(null);
+
+  // Clean and encode loan type
+  const cleanedLoanType = encodeURIComponent(loanType.replace("-details", "").replace(/-/g, " "));
+
+  useEffect(() => {
+    const fetchBankerDetails = async () => {
+      if (!loanData?.personalDetail?.pinCode || !cleanedLoanType) return;
+
+      try {
+        const response = await axiosInstance.get(`/subAdmin/get-banker`, {
+          params: {
+            pincode: loanData.personalDetail.pinCode,
+            type: 110008,
+            // pincode: loanData.personalDetail.pinCode,
+            // type: cleanedLoanType,
+          },
+        });
+
+        if (response.data.success && response.data.results.length > 0) {
+          setBankerInfo(response.data.results[0]);
+        } else {
+          setBankerInfo(null);
+        }
+      } catch (error) {
+        console.error("Error fetching banker details:", error);
+      }
+    };
+
+    fetchBankerDetails();
+  }, [loanData?.personalDetail?.pinCode, cleanedLoanType]);
+
   return (
     <div className="bg-[#FFFFFF] m-4 p-4 font-Inter h-[85vh] overflow-y-scroll">
       <div className="flex items-center justify-between">
@@ -294,18 +357,18 @@ const LoanDetails = () => {
         <div className="flex items-center gap-4">
           {
             subAdminPermission?.downloanLoanDetails &&
-          <div
-            onClick={() => downloadPDF()}
-            className="flex items-center justify-center gap-2 cursor-pointer"
-          >
-            <FaDownload className="text-2xl cursor-pointer text-[#656575]" />
-            <button className="text-base md:text-lg text-[#3B3935] cursor-pointer">
-              Download PDF
-            </button>
-          </div>
-}
+            <div
+              onClick={() => downloadPDF()}
+              className="flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <FaDownload className="text-2xl cursor-pointer text-[#656575]" />
+              <button className="text-base md:text-lg text-[#3B3935] cursor-pointer">
+                Download PDF
+              </button>
+            </div>
+          }
 
-          {loanData &&  (subAdminPermission?.updateLoanStatus || subAdminPermission?.updatePaymentStatus ) && (
+          {loanData && (subAdminPermission?.updateLoanStatus || subAdminPermission?.updatePaymentStatus) && (
             <div
               onClick={handleShowModal}
               className="flex items-center justify-center gap-2 cursor-pointer"
@@ -345,41 +408,41 @@ const LoanDetails = () => {
                 </li>
                 {
                   item?.reason && (
-                  <li className=" col-start-3 col-end-5">
-                  <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
-                    Reason
-                  </h5>
-                  <p className="font-normal text-xs md:text-sm text-[#3B3935]">
-                    {item?.reason || "N/A"}
-                  </p>
-                </li>
+                    <li className=" col-start-3 col-end-5">
+                      <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
+                        Reason
+                      </h5>
+                      <p className="font-normal text-xs md:text-sm text-[#3B3935]">
+                        {item?.reason || "N/A"}
+                      </p>
+                    </li>
                   )
                 }
                 {
                   item?.bank && (
                     <li className=" col-start-3 col-end-4 ">
-                  <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
-                    Bank
-                  </h5>
-                  <p className="font-normal text-xs md:text-sm text-[#3B3935]">
-                    {item?.bank || "N/A"}
-                  </p>
-                </li>
+                      <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
+                        Bank
+                      </h5>
+                      <p className="font-normal text-xs md:text-sm text-[#3B3935]">
+                        {item?.bank || "N/A"}
+                      </p>
+                    </li>
                   )
                 }
                 {
                   item?.disburstAmount && (
                     <li className=" col-start-4 col-end-5 ">
-                  <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
-                    Disburst Amount
-                  </h5>
-                  <p className="font-normal text-xs md:text-sm text-[#3B3935]">
-                    {item?.disburstAmount || "N/A"}
-                  </p>
-                </li>
+                      <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
+                        Disburst Amount
+                      </h5>
+                      <p className="font-normal text-xs md:text-sm text-[#3B3935]">
+                        {item?.disburstAmount || "N/A"}
+                      </p>
+                    </li>
                   )
                 }
-                
+
               </ul>
               <div className="my-[1rem]">
                 <hr />
@@ -387,39 +450,79 @@ const LoanDetails = () => {
             </div>
           ))}
       </div>
+
+
+      {/* Banker Details */}
+
       <div className="border border-[#A3A3A380] rounded-md my-[1rem] p-6">
         <h4 className="font-semibold text-base md:text-lg text-[#3B3935] mb-2">
-        Company catagory
+          Banker Details
+        </h4>
+        {bankerInfo ? (
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <li>
+              <h5 className="font-semibold text-sm md:text-base text-[#3B3935]">
+                Banker Name
+              </h5>
+              <p className="font-normal text-xs md:text-sm text-[#3B3935]">
+                {bankerInfo.bankerName}
+              </p>
+            </li>
+            <li>
+              <h5 className="font-semibold text-sm md:text-base text-[#3B3935]">
+                Bank Name
+              </h5>
+              <p className="font-normal text-xs md:text-sm text-[#3B3935]">
+                {bankerInfo.bankName}
+              </p>
+            </li>
+            <li>
+              <h5 className="font-semibold text-sm md:text-base text-[#3B3935]">
+                Mobile Number
+              </h5>
+              <p className="font-normal text-xs md:text-sm text-[#3B3935]">
+                {bankerInfo.mobile}
+              </p>
+            </li>
+          </ul>
+        ) : (
+          <p className="text-sm text-[#3B3935]">No record Found</p>
+        )}
+      </div>
+
+      <div className="border border-[#A3A3A380] rounded-md my-[1rem] p-6">
+        <h4 className="font-semibold text-base md:text-lg text-[#3B3935] mb-2">
+          Company catagory
         </h4>
         {companyName &&
-            <div >
-              <ul className="grid grid-cols-4 gap-4">
-                <li className=" col-start-1 col-end-2 ">
-                  <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
-                 Company Name               
-                   </h5>
-                  <p className="font-normal text-xs md:text-sm text-[#3B3935]">
-                    {companyName? companyName  : "N/A"}
-                  </p>
-                </li>
-                <li className=" col-start-2 col-end-3 ">
-                  <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
-                    Grade
-                  </h5>
-                  <p className="font-normal text-xs md:text-sm text-[#3B3935]">
-                  {companyGrade? companyGrade  : "Not found in our list"}
-                  </p>
-                </li>
-             
-            
-            
-                
-              </ul>
-              <div className="my-[1rem]">
-                <hr />
-              </div>
+          <div >
+            <ul className="grid grid-cols-4 gap-4">
+              <li className=" col-start-1 col-end-2 ">
+                <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
+                  Company Name
+                </h5>
+                <p className="font-normal text-xs md:text-sm text-[#3B3935]">
+                  {companyName ? companyName : "N/A"}
+                </p>
+              </li>
+              <li className=" col-start-2 col-end-3 ">
+                <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
+                  Grade
+                </h5>
+                <p className="font-normal text-xs md:text-sm text-[#3B3935]">
+                  {companyGrade ? companyGrade : "Not found in our list"}
+                </p>
+              </li>
+
+
+
+
+            </ul>
+            <div className="my-[1rem]">
+              <hr />
             </div>
-      }
+          </div>
+        }
       </div>
       {loanData && (
         <>
@@ -665,7 +768,7 @@ const LoanDetails = () => {
                 Running Loan
               </h4>
 
-              {loanData?.runningLoan && loanData?.runningLoan?.loans.length > 0  ? (
+              {loanData?.runningLoan && loanData?.runningLoan?.loans.length > 0 ? (
                 loanData?.runningLoan?.loans.map((item, i) => {
                   return (
                     <div key={i}>
@@ -738,7 +841,7 @@ const LoanDetails = () => {
                       onClick={() => downLoadFile(value)}
                       className="flex items-center gap-2 mb-3 cursor-pointer"
                     >
-                      <FaDownload className="text-2xl  text-[#656575]" /> 
+                      <FaDownload className="text-2xl  text-[#656575]" />
                       <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
                         {documentLabel[key]}
                       </h5>
