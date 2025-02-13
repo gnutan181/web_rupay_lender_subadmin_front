@@ -12,7 +12,7 @@ import { NavLink } from 'react-router-dom';
 // import { useLocation } from 'react-router-dom';
 
 import { IoIosArrowDown } from "react-icons/io";
-import { department } from '../../hooks/useGetDepartment';
+import { department, subAdminPermission } from '../../hooks/useGetDepartment';
 import { subAdminRole } from '../../hooks/useGetDepartment';
 // import { GiConsoleController } from 'react-icons/gi';
 
@@ -153,6 +153,18 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
                     </NavLink>
                   </li>
 
+                  {/* <li className="m-4">
+                    <NavLink
+                      to="/view-apply-jobs"
+                      className={({ isActive }) =>
+                        isActive ? 'bg-[#F89D28] block p-2 text-[#FFFFFF] font-medium  text-base md:text-lg rounded-md' : 'block p-2 hover:bg-[#f89e282a] text-[#FFFFFF] font-medium  text-base md:text-lg'
+                      }
+                    >
+                      View Applied Jobs
+                    </NavLink>
+
+                  </li> */}
+
 
                   <li className="m-4 text-[#FFFFFF] font-medium  text-base md:text-lg">
                     <Dropdown title="Payment History">
@@ -239,7 +251,7 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
 
 
       </div>
-    </div>
+    </div >
   )
 }
 Dropdown.propTypes = {
