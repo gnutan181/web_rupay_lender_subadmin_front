@@ -25,7 +25,7 @@ const Login = React.lazy(() => import("../component/Login/Login"));
 const SideBar = React.lazy(() => import("../component/SideBar/SideBar"));
 const Navbar = React.lazy(() => import("../component/Navbar/Navbar"));
 
-import { department } from "../hooks/useGetDepartment";
+import { department, subAdminPermission } from "../hooks/useGetDepartment";
 import { subAdminRole } from "../hooks/useGetDepartment";
 import GstRegistration from "../component/CAService/GstRegistration";
 import GstIncomeTaxReturn from "../component/CAService/GstIncomeTaxReturn";
@@ -44,6 +44,9 @@ import Profile from "../component/Profile/Profile";
 import CreateLead from "../component/CreateLead/CreateLead";
 import MovedLead from "../component/CreateLead/MovedLead";
 import Bankers from "../component/CreateLead/Bankers";
+import CreateJobForm from "../component/Career/CreateJobForm";
+import ViewApplyJobs from "../component/Career/ViewApplyJobs";
+
 
 const User = React.lazy(() => import("../component/User/User"));
 const UserDetails = React.lazy(() => import("../component/User/UserDetails"));
@@ -115,6 +118,13 @@ const Routers = () => {
                 <Route path="/moved-lead" element={<MovedLead />} />
               </>
             )}
+            {/* {subAdminRole === "manager" && ( */}
+            {/* {subAdminPermission === "createJob" && ( */}
+            <>
+              <Route path="/create-career" element={<CreateJobForm />} />
+              <Route path="/view-apply-jobs" element={<ViewApplyJobs />} />
+            </>
+            {/* )} */}
 
 
             {department.includes("personal loan") && (
