@@ -282,7 +282,7 @@ import { useCallback, useEffect, useState, useContext, useMemo } from "react";
 import axiosInstance from "../axiosInstance";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import ReactPaginate from "react-paginate";
+// import ReactPaginate from "react-paginate";
 import { SearchContext } from "../../context/SearchContext";
 import PropTypes from 'prop-types';
 
@@ -410,9 +410,9 @@ const Loan = ({ loanType }) => {
     }
   }, [loanData, itemsPerPage]); // Add itemsPerPage to dependency array
 
-  const handlePageClick = ({ selected }) => {
-    setCurrentPage(selected);
-  };
+  // const handlePageClick = ({ selected }) => {
+  //   setCurrentPage(selected);
+  // };
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
@@ -545,7 +545,7 @@ const Loan = ({ loanType }) => {
               Page {currentPage + 1} of {pageCount}
             </span>
           </div>
-          <ReactPaginate
+          {/* <ReactPaginate
             breakLabel={"..."}
             nextLabel={"Next"}
             onPageChange={handlePageClick}
@@ -565,7 +565,7 @@ const Loan = ({ loanType }) => {
             activeLinkClassName="px-3 py-2 rounded-lg no-underline bg-amber-500 bg-orange-500 border border-[#F1F1F1] text-base font-semibold font-DMSans cursor-pointer"
             previousClassName={currentPage === 0 ? "hidden" : ""}
             nextClassName={currentPage === pageCount - 1 ? "hidden" : ""}
-          />
+          /> */}
         </div>
       )}
     </div>
