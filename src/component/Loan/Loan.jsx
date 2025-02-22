@@ -1,14 +1,12 @@
-// // Loan.js
+
+// // Updated Loan.js
 // import { useCallback, useEffect, useState, useContext, useMemo } from "react";
 // import axiosInstance from "../axiosInstance";
-
-// // import { TbDownload } from "react-icons/tb";
-// // import { FaRegEdit } from "react-icons/fa";
 // import { MdOutlineRemoveRedEye } from "react-icons/md";
 // import { useNavigate } from "react-router-dom";
 // import ReactPaginate from "react-paginate";
-
 // import { SearchContext } from "../../context/SearchContext";
+// import PropTypes from 'prop-types';
 
 // const Loan = ({ loanType }) => {
 //   const { searchValue } = useContext(SearchContext);
@@ -18,27 +16,10 @@
 //   const [items, setItems] = useState([]);
 //   const [currentPage, setCurrentPage] = useState(0);
 //   const [pageCount, setPageCount] = useState(0);
-//   const itemsPerPage = 6;
-
-//   const [loans, setLoans] = useState([]);
 //   const [managers, setManagers] = useState([]);
-//   const [selectedManager, setSelectedManager] = useState({});
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const loanResponse = await axios.get("/api/loans");
-//         const managerResponse = await axios.get("/api/managers");
-//         setLoans(loanResponse.data);
-//         setManagers(managerResponse.data);
-//       } catch (err) {
-//         setError("Failed to fetch data");
-//       }
-//     };
-//     fetchData();
-//   }, []);
-
+//   const [loadingManager, setLoadingManager] = useState(false);
+//   const [loadingMove, setLoadingMove] = useState({});
+//   const itemsPerPage = 6;
 
 //   const apiEndpoints = useMemo(
 //     () => ({
@@ -52,10 +33,9 @@
 //       usedcar: "used-car-loan",
 //       lapbt: "loan-against-property-bt",
 //     }),
-//     [] // Dependencies: empty array means this will only be created once
+//     []
 //   );
 
-//   // get search loans
 //   const fetchSearchdata = useCallback(async () => {
 //     try {
 //       const res = await axiosInstance.get(`/subAdmin/search/${searchValue}`);
@@ -64,6 +44,7 @@
 //       console.error("Error fetching loan data:", error);
 //     }
 //   }, [searchValue]);
+
 //   useEffect(() => {
 //     if (searchValue) {
 //       let timeout = setTimeout(() => {
@@ -74,7 +55,6 @@
 //     }
 //   }, [searchValue, fetchSearchdata]);
 
-//   // get all loans
 //   const fetchLoanData = useCallback(async () => {
 //     try {
 //       const res = await axiosInstance.get(`/subAdmin/manager-loans/${apiEndpoints[loanType]}`);
@@ -83,11 +63,42 @@
 //       console.error("Error fetching loan data:", error);
 //     }
 //   }, [apiEndpoints, loanType]);
+
 //   useEffect(() => {
 //     fetchLoanData();
 //   }, [loanType]);
 
-//   const handleViewDetails = async (id) => {
+//   const fetchManagers = useCallback(async () => {
+//     setLoadingManager(true);
+//     try {
+//       const res = await axiosInstance.get(`/subAdmin/get-manager`);
+//       setManagers(res.data.subAdmin);
+//     } catch (error) {
+//       console.error("Error fetching managers:", error);
+//     } finally {
+//       setLoadingManager(false);
+//     }
+//   }, []);
+
+//   useEffect(() => {
+//     fetchManagers();
+//   }, [fetchManagers]);
+
+//   const handleMoveTo = async (leadId, movedTo) => {
+//     setLoadingMove((prev) => ({ ...prev, [leadId]: true }));
+//     try {
+//       await axiosInstance.patch(`/subAdmin/move-to/${leadId}`, { movedTo });
+//       alert(`Lead moved to ${movedTo}`);
+//       fetchLoanData();
+//     } catch (error) {
+//       console.error("Error moving lead:", error);
+//       alert("Lead not moved");
+//     } finally {
+//       setLoadingMove((prev) => ({ ...prev, [leadId]: false }));
+//     }
+//   };
+
+//   const handleViewDetails = (id) => {
 //     navigate(`/${loanType}-loan-details/${id}`);
 //   };
 
@@ -100,7 +111,6 @@
 //       case "Pending":
 //         return "#F48C7F";
 //       case "Cancel":
-//         return "#ED2037";
 //       case "on-hold":
 //         return "#ED2037";
 //       default:
@@ -108,7 +118,6 @@
 //     }
 //   };
 
-//   // if have to use search them un comment it
 //   useEffect(() => {
 //     if (loanData && !searchValue) {
 //       setItems(loanData);
@@ -139,155 +148,95 @@
 //             <table className="min-w-full divide-y divide-gray-200">
 //               <thead>
 //                 <tr>
-//                   <th
-//                     scope="col"
-//                     className="px-3 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-//                   >
+//                   <th className="px-3 py-3 text-start text-xs font-medium text-gray-500 uppercase">
 //                     Application Id
 //                   </th>
-//                   <th
-//                     scope="col"
-//                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-//                   >
+//                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
 //                     Vendor Name
 //                   </th>
-//                   <th
-//                     scope="col"
-//                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-//                   >
+//                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
 //                     Vendor No.
 //                   </th>
-//                   <th
-//                     scope="col"
-//                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-//                   >
+//                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
 //                     Created loan
 //                   </th>
-//                   <th
-//                     scope="col"
-//                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-//                   >
+//                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
 //                     Required loan
 //                   </th>
-//                   <th
-//                     scope="col"
-//                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-//                   >
-//                     City
-//                   </th>
-//                   <th
-//                     scope="col"
-//                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-//                   >
+//                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
 //                     Status
 //                   </th>
-//                   <th
-//                     scope="col"
-//                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-//                   >
+//                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
 //                     Action
 //                   </th>
-//                   <th
-//                     scope="col"
-//                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-//                   >
+//                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
 //                     Moved To
 //                   </th>
 //                 </tr>
 //               </thead>
-//               {
-//                 searchValue ? (
-//                   (searchLoanData && searchLoanData.length) > 0 ? (
-//                     searchLoanData.map((item, i) => {
-//                       return (
-//                         <tbody key={i} className="divide-y divide-gray-200">
-//                           <tr className="bg-white border-b   text-[#3B3935] font-normal text-xs md:text-sm">
-//                             <td className="px-3 py-4">{item?.applicationID}</td>
-//                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-//                               {item.vendorInfo?.username || "N/A"}
-//                             </td>
-//                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-//                               {item.vendorInfo?.mobile || "N/A"}
-//                             </td>
-//                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-//                               {item?.createdLoan || "N/A"}
-//                             </td>
-//                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-//                               {` Rs.${item.details?.personalDetail?.loanAmount || "N/A"
-//                                 }`}
-//                             </td>
-//                             <td
-//                               style={{ color: getStatusColor(item?.status) }}
-//                               className="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
-//                             >
-//                               {item?.status?.loanStatus || "N/A"}
-//                             </td>
-
-//                             <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-800 ">
-//                               <MdOutlineRemoveRedEye
-//                                 className="text-2xl cursor-pointer"
-//                                 onClick={() => handleViewDetails(item._id)}
-//                               />
-//                             </td>
-//                           </tr>
-//                         </tbody>
-//                       );
-//                     })
-//                   ) : (
-//                     <div className="w-full h-[20rem] flex items-center justify-center">
-//                       <h1>No Data Found</h1>
-//                     </div>
+//               <tbody>
+//                 {(searchValue ? searchLoanData : items)
+//                   .slice(
+//                     currentPage * itemsPerPage,
+//                     (currentPage + 1) * itemsPerPage
 //                   )
-//                 ) : (
-//                   loanData &&
-//                   items
-//                     .slice(
-//                       currentPage * itemsPerPage,
-//                       (currentPage + 1) * itemsPerPage
-//                     )
-//                     .map((item, i) => (
-//                       <tbody key={i} className="divide-y divide-gray-200">
-//                         <tr className="bg-white border-b   text-[#3B3935] font-normal text-xs md:text-sm">
-//                           <td className="px-3 py-4">{item.applicationID}</td>
-//                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-//                             {item.vendorInfo?.username || "N/A"}
-//                           </td>
-//                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-//                             {item.vendorInfo?.mobile || "N/A"}
-//                           </td>
-//                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-//                             {item?.createdLoan || "N/A"}
-//                           </td>
-//                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-//                             {` Rs.${item.details?.personalDetail?.loanAmount || "N/A"
-//                               }`}
-//                           </td>
-//                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-//                             {item.vendorInfo?.city || "N/A"}
-//                           </td>
-//                           {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-//                         {item.vendorInfo?.state || "N/A"}
-//                         </td> */}
-
-//                           <td
-//                             style={{ color: getStatusColor(item?.status) }}
-//                             className="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
-//                           >
-//                             {item?.status?.loanStatus || "N/A"}
-//                           </td>
-
-//                           <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-800 ">
-//                             <MdOutlineRemoveRedEye
-//                               className="text-2xl cursor-pointer"
-//                               onClick={() => handleViewDetails(item._id)}
-//                             />
-//                           </td>
-//                         </tr>
-//                       </tbody>
-//                     ))
-//                 )
-
-//               }
+//                   .map((item, i) => (
+//                     <tr
+//                       key={i}
+//                       className="bg-white border-b text-[#3B3935] font-normal text-xs md:text-sm"
+//                     >
+//                       <td className="px-3 py-4">{item.applicationID}</td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+//                         {item.vendorInfo?.username || "N/A"}
+//                       </td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+//                         {item.vendorInfo?.mobile || "N/A"}
+//                       </td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+//                         {item?.createdLoan || "N/A"}
+//                       </td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+//                         {`Rs.${item.details?.personalDetail?.loanAmount || "N/A"}`}
+//                       </td>
+//                       <td
+//                         style={{ color: getStatusColor(item?.status) }}
+//                         className="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
+//                       >
+//                         {item?.status?.loanStatus || "N/A"}
+//                       </td>
+//                       <td className="px-8 py-4 whitespace-nowrap text-sm text-gray-800">
+//                         <MdOutlineRemoveRedEye
+//                           className="text-2xl cursor-pointer"
+//                           onClick={() => handleViewDetails(item._id)}
+//                         />
+//                       </td>
+//                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+//                         {loadingManager ? (
+//                           <div className="spinner">Loading...</div>
+//                         ) : (
+//                           <div className="flex items-center gap-2">
+//                             <select
+//                               className="border rounded px-2 py-1"
+//                               onChange={(e) => handleMoveTo(item._id, e.target.value)}
+//                               defaultValue=""
+//                             >
+//                               <option value="" disabled>
+//                                 Move To
+//                               </option>
+//                               {managers.map((manager) => (
+//                                 <option key={manager?._id} value={manager?.username}>
+//                                   {manager?.username}
+//                                 </option>
+//                               ))}
+//                             </select>
+//                             {loadingMove[item._id] && <div className="spinner">...</div>}
+//                           </div>
+//                         )}
+//                         {item?.movedTo || "Not moved To anyone"}
+//                       </td>
+//                     </tr>
+//                   ))}
+//               </tbody>
 //             </table>
 //           </div>
 //         </div>
@@ -321,12 +270,14 @@
 //     </div>
 //   );
 // };
-
+// Loan.propTypes = {
+//   loanType: PropTypes.string, 
+// };
 // export default Loan;
 
 
+// upadte pagination page 
 
-// Updated Loan.js
 import { useCallback, useEffect, useState, useContext, useMemo } from "react";
 import axiosInstance from "../axiosInstance";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
@@ -346,7 +297,7 @@ const Loan = ({ loanType }) => {
   const [managers, setManagers] = useState([]);
   const [loadingManager, setLoadingManager] = useState(false);
   const [loadingMove, setLoadingMove] = useState({});
-  const itemsPerPage = 6;
+  const [itemsPerPage, setItemsPerPage] = useState(6); // New state for items per page
 
   const apiEndpoints = useMemo(
     () => ({
@@ -450,17 +401,22 @@ const Loan = ({ loanType }) => {
       setItems(loanData);
       setPageCount(Math.ceil(loanData.length / itemsPerPage));
     }
-  }, [loanData, searchValue]);
+  }, [loanData, searchValue, itemsPerPage]); // Add itemsPerPage to dependency array
 
   useEffect(() => {
     if (loanData) {
       setItems(loanData);
       setPageCount(Math.ceil(loanData.length / itemsPerPage));
     }
-  }, [loanData]);
+  }, [loanData, itemsPerPage]); // Add itemsPerPage to dependency array
 
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
+  };
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(0); // Reset to the first page when changing items per page
   };
 
   return (
@@ -570,7 +526,25 @@ const Loan = ({ loanType }) => {
       </div>
 
       {loanData && (
-        <div className="m-4">
+        <div className="m-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span>Rows per page:</span>
+            <select
+              className="border rounded px-2 py-1"
+              onChange={handleItemsPerPageChange}
+              value={itemsPerPage}
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={30}>30</option>
+              <option value={40}>40</option>
+              <option value={50}>50</option>
+            </select>
+            <span>
+              Page {currentPage + 1} of {pageCount}
+            </span>
+          </div>
           <ReactPaginate
             breakLabel={"..."}
             nextLabel={"Next"}
@@ -598,6 +572,6 @@ const Loan = ({ loanType }) => {
   );
 };
 Loan.propTypes = {
-  loanType: PropTypes.string, 
+  loanType: PropTypes.string,
 };
 export default Loan;
