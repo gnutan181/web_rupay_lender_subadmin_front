@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import axiosInstance from "../axiosInstance";
 import DropDownSearch from "../common/DropDownSearch";
 import { LoanDocument } from "../common/LoanDocument";
@@ -62,8 +62,40 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
     setIsOpen(false);
   };
 
+  // const handlesubmit = async () => {
+  //   if (isStatusSelected) {
+  //     let data;
+
+  //     if (selectedValue === "Completed") {
+  //       data = {
+  //         loanStatus: selectedValue,
+  //         disburstAmount: statusComplete.disburstAmount,
+  //         bank: statusComplete.bank,
+  //       };
+  //     } else if (selectedValue === "Cancel" || selectedValue === "Process") {
+  //       data = {
+  //         loanStatus: selectedValue,
+  //         reason: textFieldValue,
+  //       };
+  //     } else if (selectedValue === "on-hold") {
+  //       data = {
+  //         loanStatus: selectedValue,
+  //         reason: textFieldValue,
+  //         reuploadDocs: selectedLoan,
+  //       };
+  //     }
+
+  //     await FetchUpdateStatus(data);
+  //     clearData();
+  //     setShowModal(false);
+  //   }
+  // };
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const handlesubmit = async () => {
-    if (isStatusSelected) {
+    if (isStatusSelected && !isSubmitting) {
+      setIsSubmitting(true); // Disable the button
+
       let data;
 
       if (selectedValue === "Completed") {
@@ -85,11 +117,20 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
         };
       }
 
-      await FetchUpdateStatus(data);
-      clearData();
-      setShowModal(false);
+      try {
+        await FetchUpdateStatus(data);
+        clearData();
+        setShowModal(false);
+        alert("Status updated successfully!"); // Show alert
+      } catch (error) {
+        console.error("Error updating status:", error);
+        alert("Failed to update status. Please try again."); // Show error alert
+      } finally {
+        setIsSubmitting(false); // Re-enable the button
+      }
     }
   };
+
 
   const submitRequiredDocs = (selectedOption) => {
     setSelectedLoan(selectedOption);
@@ -155,7 +196,7 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
                           <div className="py-1">
                             {subAdminPermission?.updateLoanStatus &&
                               // (subAdminPermission?.updatePaymentStatus && 
-                                (
+                              (
                                 <div>
                                   <a
                                     href="#"
@@ -180,7 +221,7 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
                                   </a>
                                 </div>
                               )
-                              }
+                            }
                             {subAdminPermission?.updatePaymentStatus && (
                               <a
                                 href="#"
@@ -288,11 +329,18 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
                     >
                       Cancel
                     </button>
-                    <button
+                    {/* <button
                       onClick={handlesubmit}
                       className="bg-[#F89D28] text-[#FFFFFF] p-2 px-6 rounded-lg cursor-pointer font-semibold text-base md:text-lg"
                     >
                       Submit
+                    </button> */}
+                    <button
+                      onClick={handlesubmit}
+                      disabled={isSubmitting}
+                      className="bg-[#F89D28] text-[#FFFFFF] p-2 px-6 rounded-lg cursor-pointer font-semibold text-base md:text-lg"
+                    >
+                      {isSubmitting ? "Submitting..." : "Submit"}
                     </button>
                   </div>
                 </div>
