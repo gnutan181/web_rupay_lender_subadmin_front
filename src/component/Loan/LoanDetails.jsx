@@ -15,6 +15,7 @@ import axios from "axios";
 
 const LoanDetails = () => {
   const { loanType, loanItemId } = useParams();
+  // const []
   const [loanData, setLoanData] = useState(null);
   const [companyName, setCompanyName] = useState("")
   const [openViewDoc, setOpenViewDoc] = useState(false);

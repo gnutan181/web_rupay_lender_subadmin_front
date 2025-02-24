@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 import debounce from "lodash.debounce";
 import axiosInstance from "../axiosInstance";
+import { subAdminPermission } from "../../hooks/useGetDepartment";
 import './Navbar.css';
 
 const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
@@ -27,7 +28,8 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
     sessionStorage.removeItem("token");
     navigate("/login");
   };
-
+//  const subAdminPermission = subAdminPermission()
+// console.log(subAdminPermission)
   const fetchRightBoxData = debounce(async (pinCode) => {
     if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
       try {
@@ -132,15 +134,18 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
           >
             {showBox1 ? "Close Banks" : "Search Pincode"}
           </button>
-
-          <div
+          
+         { subAdminPermission?.createJob &&
+            <div
             onClick={() => {
               navigate("/create-career");
             }}
             className="w-8 h-8 md:w-10 md:h-10 border border-[#F89D28] rounded-full bg-[#FFFFFF] flex items-center justify-center cursor-pointer"
           >
             <p className="text-[#F89D28]">Job</p>
-          </div>
+          </div> }
+          
+          
 
           <div
             onClick={() => navigate("/profile")}
