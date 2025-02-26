@@ -1,10 +1,10 @@
+// // upadte pagination page 
 
-// // Updated Loan.js
 // import { useCallback, useEffect, useState, useContext, useMemo } from "react";
 // import axiosInstance from "../axiosInstance";
 // import { MdOutlineRemoveRedEye } from "react-icons/md";
 // import { useNavigate } from "react-router-dom";
-// import ReactPaginate from "react-paginate";
+// // import ReactPaginate from "react-paginate";
 // import { SearchContext } from "../../context/SearchContext";
 // import PropTypes from 'prop-types';
 
@@ -19,7 +19,7 @@
 //   const [managers, setManagers] = useState([]);
 //   const [loadingManager, setLoadingManager] = useState(false);
 //   const [loadingMove, setLoadingMove] = useState({});
-//   const itemsPerPage = 6;
+//   const [itemsPerPage, setItemsPerPage] = useState(6); // New state for items per page
 
 //   const apiEndpoints = useMemo(
 //     () => ({
@@ -123,17 +123,22 @@
 //       setItems(loanData);
 //       setPageCount(Math.ceil(loanData.length / itemsPerPage));
 //     }
-//   }, [loanData, searchValue]);
+//   }, [loanData, searchValue, itemsPerPage]); // Add itemsPerPage to dependency array
 
 //   useEffect(() => {
 //     if (loanData) {
 //       setItems(loanData);
 //       setPageCount(Math.ceil(loanData.length / itemsPerPage));
 //     }
-//   }, [loanData]);
+//   }, [loanData, itemsPerPage]); // Add itemsPerPage to dependency array
 
-//   const handlePageClick = ({ selected }) => {
-//     setCurrentPage(selected);
+//   // const handlePageClick = ({ selected }) => {
+//   //   setCurrentPage(selected);
+//   // };
+
+//   const handleItemsPerPageChange = (e) => {
+//     setItemsPerPage(Number(e.target.value));
+//     setCurrentPage(0); // Reset to the first page when changing items per page
 //   };
 
 //   return (
@@ -243,8 +248,26 @@
 //       </div>
 
 //       {loanData && (
-//         <div className="m-4">
-//           <ReactPaginate
+//         <div className="m-4 flex items-center justify-between">
+//           <div className="flex items-center gap-2">
+//             <span>Rows per page:</span>
+//             <select
+//               className="border rounded px-2 py-1"
+//               onChange={handleItemsPerPageChange}
+//               value={itemsPerPage}
+//             >
+//               <option value={5}>5</option>
+//               <option value={10}>10</option>
+//               <option value={20}>20</option>
+//               <option value={30}>30</option>
+//               <option value={40}>40</option>
+//               <option value={50}>50</option>
+//             </select>
+//             <span>
+//               Page {currentPage + 1} of {pageCount}
+//             </span>
+//           </div>
+//           {/* <ReactPaginate
 //             breakLabel={"..."}
 //             nextLabel={"Next"}
 //             onPageChange={handlePageClick}
@@ -264,25 +287,24 @@
 //             activeLinkClassName="px-3 py-2 rounded-lg no-underline bg-amber-500 bg-orange-500 border border-[#F1F1F1] text-base font-semibold font-DMSans cursor-pointer"
 //             previousClassName={currentPage === 0 ? "hidden" : ""}
 //             nextClassName={currentPage === pageCount - 1 ? "hidden" : ""}
-//           />
+//           /> */}
 //         </div>
 //       )}
 //     </div>
 //   );
 // };
 // Loan.propTypes = {
-//   loanType: PropTypes.string, 
+//   loanType: PropTypes.string,
 // };
 // export default Loan;
 
 
-// upadte pagination page 
+
 
 import { useCallback, useEffect, useState, useContext, useMemo } from "react";
 import axiosInstance from "../axiosInstance";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-// import ReactPaginate from "react-paginate";
 import { SearchContext } from "../../context/SearchContext";
 import PropTypes from 'prop-types';
 
@@ -297,7 +319,7 @@ const Loan = ({ loanType }) => {
   const [managers, setManagers] = useState([]);
   const [loadingManager, setLoadingManager] = useState(false);
   const [loadingMove, setLoadingMove] = useState({});
-  const [itemsPerPage, setItemsPerPage] = useState(6); // New state for items per page
+  const [itemsPerPage, setItemsPerPage] = useState(6);
 
   const apiEndpoints = useMemo(
     () => ({
@@ -401,22 +423,24 @@ const Loan = ({ loanType }) => {
       setItems(loanData);
       setPageCount(Math.ceil(loanData.length / itemsPerPage));
     }
-  }, [loanData, searchValue, itemsPerPage]); // Add itemsPerPage to dependency array
+  }, [loanData, searchValue, itemsPerPage]);
 
   useEffect(() => {
     if (loanData) {
       setItems(loanData);
       setPageCount(Math.ceil(loanData.length / itemsPerPage));
     }
-  }, [loanData, itemsPerPage]); // Add itemsPerPage to dependency array
-
-  // const handlePageClick = ({ selected }) => {
-  //   setCurrentPage(selected);
-  // };
+  }, [loanData, itemsPerPage]);
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(Number(e.target.value));
-    setCurrentPage(0); // Reset to the first page when changing items per page
+    setCurrentPage(0);
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 0 && newPage < pageCount) {
+      setCurrentPage(newPage);
+    }
   };
 
   return (
@@ -545,33 +569,30 @@ const Loan = ({ loanType }) => {
               Page {currentPage + 1} of {pageCount}
             </span>
           </div>
-          {/* <ReactPaginate
-            breakLabel={"..."}
-            nextLabel={"Next"}
-            onPageChange={handlePageClick}
-            pageCount={pageCount}
-            previousLabel={"Prev"}
-            containerClassName={"w-fit ml-auto mr-0 flex items-center gap-2"}
-            pageLinkClassName={
-              "px-3 py-2 rounded-lg bg-[#FFFFFF] no-underline border border-[#F1F1F1] text-[#333333] text-base font-semibold font-DMSans cursor-pointer"
-            }
-            previousLinkClassName={
-              "px-3 py-2 text-[#333333] no-underline text-base font-semibold font-DMSans cursor-pointer"
-            }
-            nextLinkClassName={
-              "px-3 py-2 text-[#333333] no-underline text-base font-semibold font-DMSans cursor-pointer"
-            }
-            breakClassName="px-3 rounded-lg bg-[#FFFFFF] no-underline border border-[#F1F1F1] text-[#333333] text-base font-semibold font-DMSans"
-            activeLinkClassName="px-3 py-2 rounded-lg no-underline bg-amber-500 bg-orange-500 border border-[#F1F1F1] text-base font-semibold font-DMSans cursor-pointer"
-            previousClassName={currentPage === 0 ? "hidden" : ""}
-            nextClassName={currentPage === pageCount - 1 ? "hidden" : ""}
-          /> */}
+          <div className="flex items-center gap-2">
+            <button
+              className="px-3 py-2 rounded-lg bg-[#FFFFFF] no-underline border border-[#F1F1F1] text-[#333333] text-base font-semibold font-DMSans cursor-pointer"
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 0}
+            >
+              Prev
+            </button>
+            <button
+              className="px-3 py-2 rounded-lg bg-[#FFFFFF] no-underline border border-[#F1F1F1] text-[#333333] text-base font-semibold font-DMSans cursor-pointer"
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === pageCount - 1}
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
     </div>
   );
 };
+
 Loan.propTypes = {
   loanType: PropTypes.string,
 };
+
 export default Loan;

@@ -39,7 +39,7 @@ const MovedLead = ({ loanType }) => {
                 if (response.data.success) {
                     setData(response.data.loan);
                 } else {
-                    throw new Error("Failed to fetch data");
+                    throw new Error("There are no moved leads");
                 }
             } catch (err) {
                 setError(err.message);

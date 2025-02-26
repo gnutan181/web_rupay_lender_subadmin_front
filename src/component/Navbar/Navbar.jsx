@@ -28,8 +28,8 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
     sessionStorage.removeItem("token");
     navigate("/login");
   };
-//  const subAdminPermission = subAdminPermission()
-// console.log(subAdminPermission)
+  //  const subAdminPermission = subAdminPermission()
+  // console.log(subAdminPermission)
   const fetchRightBoxData = debounce(async (pinCode) => {
     if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
       try {
@@ -121,11 +121,14 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
         </div>
         <div className="flex items-center justify-center gap-4">
 
-          <div
-            className={`w-8 h-8 md:w-10 md:h-10 border border-[#F89D28] rounded-full bg-[#FFFFFF] flex items-center justify-center cursor-pointer ${isBlinking ? 'animate-blink' : ''
-              }`}
-          >
-            <p className="text-[#F89D28]">{pendingNumbers}</p>
+          <div className="flex items-center gap-2 px-4 py-2 bg-[#F89D28] text-white rounded-md">
+            <span>Pending Inquiries :-</span>
+            <span
+              className={`w-8 h-8 md:w-10 md:h-10 border border-[#F89D28] rounded-full bg-[#FFFFFF] flex items-center justify-center cursor-pointer ${isBlinking ? 'animate-blink' : ''
+                }`}
+            >
+              <span className="text-[#F89D28]">{pendingNumbers}</span>
+            </span>
           </div>
 
           <button
@@ -134,18 +137,18 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
           >
             {showBox1 ? "Close Banks" : "Search Pincode"}
           </button>
-          
-         { subAdminPermission?.createJob &&
+
+          {subAdminPermission?.createJob &&
             <div
-            onClick={() => {
-              navigate("/create-career");
-            }}
-            className="w-8 h-8 md:w-10 md:h-10 border border-[#F89D28] rounded-full bg-[#FFFFFF] flex items-center justify-center cursor-pointer"
-          >
-            <p className="text-[#F89D28]">Job</p>
-          </div> }
-          
-          
+              onClick={() => {
+                navigate("/create-career");
+              }}
+              className="w-8 h-8 md:w-10 md:h-10 border border-[#F89D28] rounded-full bg-[#FFFFFF] flex items-center justify-center cursor-pointer"
+            >
+              <p className="text-[#F89D28]">Job</p>
+            </div>}
+
+
 
           <div
             onClick={() => navigate("/profile")}
