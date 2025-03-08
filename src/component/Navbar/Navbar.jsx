@@ -72,13 +72,14 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
   };
 
   const [pendingNumbers, setPendingNumbers] = useState(0);
+  const [reworkNumbers, setReworkNumbers] = useState(0);
   const [isBlinking, setIsBlinking] = useState(false);
-
+  
   useEffect(() => {
     const fetchPendingInquiries = async () => {
       try {
-        const response = await fetch('https://api.rupaylender.com/subAdmin/get-pendings');
-        const data = await response.json();
+        const response = await axiosInstance.get('/subAdmin/get-pendings');
+        const data = response.data;
         setPendingNumbers(data.totalPending); // Use `totalPending` from the API response
         setIsBlinking(data.totalPending > 0); // Blink if there are pending inquiries
       } catch (error) {
@@ -87,10 +88,26 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
     };
 
     fetchPendingInquiries();
-
     // Optionally, set up an interval to periodically fetch the pending inquiries
     const interval = setInterval(fetchPendingInquiries, 60000); // Fetch every 60 seconds
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
 
+  useEffect(() => {
+    const fetchPendingRework = async () => {
+      try {
+        const response = await axiosInstance.get('/subAdmin/get-rework');
+        const data = response.data;
+        setReworkNumbers(data.totalrework); // Use `totalPending` from the API response
+        setIsBlinking(data.totalrework > 0); // Blink if there are pending Rework
+      } catch (error) {
+        console.error('Error fetching pending Rework:', error);
+      }
+    };
+
+    fetchPendingRework();
+    // Optionally, set up an interval to periodically fetch the pending Rework
+    const interval = setInterval(fetchPendingRework, 60000); // Fetch every 60 seconds
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, []);
 
@@ -122,14 +139,25 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
         <div className="flex items-center justify-center gap-4">
 
           <div className="flex items-center gap-2 px-4 py-2 bg-[#F89D28] text-white rounded-md">
-            <span>Pending Inquiries :-</span>
+            <span>Rework:-</span>
             <span
-              className={`w-8 h-8 md:w-10 md:h-10 border border-[#F89D28] rounded-full bg-[#FFFFFF] flex items-center justify-center cursor-pointer ${isBlinking ? 'animate-blink' : ''
+              className={`w-8 h-8 md:w-6 md:h-6 border border-[#F89D28] rounded-full bg-[#FFFFFF] flex items-center justify-center cursor-pointer ${isBlinking ? 'animate-blink' : ''
+                }`}
+            >
+              <span className="text-[#F89D28]">{reworkNumbers}</span>
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 px-4 py-2 bg-[#F89D28] text-white rounded-md">
+            <span>Pending:-</span>
+            <span
+              className={`w-8 h-8 md:w-6 md:h-6 border border-[#F89D28] rounded-full bg-[#FFFFFF] flex items-center justify-center cursor-pointer ${isBlinking ? 'animate-blink' : ''
                 }`}
             >
               <span className="text-[#F89D28]">{pendingNumbers}</span>
             </span>
           </div>
+
 
           <button
             onClick={handleToggleBox}

@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import axiosInstance from "../axiosInstance";
 import debounce from "lodash.debounce";
 import PropTypes from 'prop-types';
@@ -45,6 +45,7 @@ const PersonalLoan = ({ mobile }) => {
 
     const [loading, setLoading] = useState(false); // New loading state
 
+    // city and state by fetching pincode
     const fetchCityAndState = debounce(async (pinCode, setFunction) => {
         if (pinCode.length === 6 && /^\d+$/.test(pinCode)) {
             try {
@@ -192,51 +193,11 @@ const PersonalLoan = ({ mobile }) => {
     };
 
     return (
-        <>
+        <>  
             <h1 className="text-[1.6rem] font-bold mt-10">Personal Loan</h1>
             <form className="p-6 bg-gray-100" onSubmit={handleSubmit}>
 
                 {/* Personal Details */}
-                {/* <h2 className="text-xl font-bold mb-4">Personal Details</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[
-                        { label: "Name as per PAN", name: "username" },
-                        { label: "Phone Number", name: "mobile" },
-                        // { label: "Profession", name: "profession" },
-                        { label: "Required Loan Amount", name: "loanAmount" },
-                        { label: "Pin Code", name: "pinCode" },
-                        { label: "State", name: "state" },
-                        { label: "City", name: "city" },
-                        { label: "Present Address", name: "presentAddress" },
-                        { label: "Email", name: "email" },
-                    ].map(({ label, name }) => (
-                        <div key={name}>
-                            <label className="block text-sm font-medium text-gray-700">
-                                {label}
-                            </label>
-                            <input
-                                type="text"
-                                name={name}
-                                value={personalDetails[name]}
-                                onChange={(e) => handleInputChange(e, setPersonalDetails)}
-                                className="p-2 border border-gray-300 rounded-md w-full"
-                            />
-                        </div>
-                    ))}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
-                    <label className="block text-sm font-medium text-gray-700">Profession
-                        <select
-                            name="profession"
-                            value={personalDetails.profession}
-                            onChange={(e) => handleInputChange(e, setPersonalDetails)}
-                            className="p-2 border border-gray-300 rounded-md w-full bg-white"
-                        >
-                            <option value="salaried" selected disabled>Job</option>
-                        </select>
-                    </label>
-                </div> */}
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Left Side - Form */}
@@ -441,6 +402,6 @@ const PersonalLoan = ({ mobile }) => {
 };
 PersonalLoan.propTypes = {
     mobile: PropTypes.string.isRequired,  // 'name' must be a string and is required
-              // 'age' must be a number, optional
-  };
+    // 'age' must be a number, optional
+};
 export default PersonalLoan;

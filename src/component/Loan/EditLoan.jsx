@@ -113,7 +113,11 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
         data = {
           loanStatus: selectedValue,
           reason: textFieldValue,
-          reuploadDocs: selectedLoan,
+        };
+      }else if (selectedValue === "ringing" || selectedValue === "call-back") {
+        data = {
+          loanStatus: selectedValue,
+          reason: textFieldValue,
         };
       }
 
@@ -215,6 +219,20 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
                                   <a
                                     href="#"
                                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    onClick={() => handleOptionClick("ringing")}
+                                  >
+                                    Ringing
+                                  </a>
+                                  <a
+                                    href="#"
+                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    onClick={() => handleOptionClick("call-back")}
+                                  >
+                                    Call Back
+                                  </a>
+                                  <a
+                                    href="#"
+                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     onClick={() => handleOptionClick("Cancel")}
                                   >
                                     Cancel
@@ -255,6 +273,36 @@ const EditLoan = ({ showModal, setShowModal, handleApiAfterUpdate }) => {
                           selectedOptions={selectedOptions}
                           setSelectedOptions={setSelectedOptions}
                         />
+                      </div>
+                    </div>
+                  )}
+                  {selectedValue === "ringing" && (
+                    <div className="w-full md:w-[90%] mt-[2rem] ">
+                      <textarea
+                        value={textFieldValue}
+                        onChange={(e) => setTextFieldValue(e.target.value)}
+                        name=""
+                        placeholder="Enter you reason of On Rining..."
+                        className="w-full outline-none border border-black rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-2"
+                        id=""
+                      ></textarea>
+
+                      <div className="w-full cursor-pointer mt-[1rem]">
+                      </div>
+                    </div>
+                  )}
+                  {selectedValue === "call-back" && (
+                    <div className="w-full md:w-[90%] mt-[2rem] ">
+                      <textarea
+                        value={textFieldValue}
+                        onChange={(e) => setTextFieldValue(e.target.value)}
+                        name=""
+                        placeholder="Enter you reason of On Rining..."
+                        className="w-full outline-none border border-black rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 p-2"
+                        id=""
+                      ></textarea>
+
+                      <div className="w-full cursor-pointer mt-[1rem]">
                       </div>
                     </div>
                   )}
