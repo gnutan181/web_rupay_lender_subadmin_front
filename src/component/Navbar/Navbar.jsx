@@ -74,7 +74,7 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
   const [pendingNumbers, setPendingNumbers] = useState(0);
   const [reworkNumbers, setReworkNumbers] = useState(0);
   const [isBlinking, setIsBlinking] = useState(false);
-  
+
   useEffect(() => {
     const fetchPendingInquiries = async () => {
       try {
@@ -111,6 +111,15 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, []);
 
+  // Function to update filter status in Loan.jsx
+  const handleFilter = (status) => {
+    // Assuming you have a way to pass the filter status to Loan.jsx
+    // For example, using context or a shared state management library
+    // Here, we'll use a simple example with localStorage
+    localStorage.setItem("filterStatus", status);
+    window.dispatchEvent(new Event("filterStatusChanged")); // Trigger an event to update Loan.jsx
+  };
+
   return (
     <div className="w-full h-[10vh] bg-[#3B3935]">
       <div className="h-full w-[90%] mx-auto flex items-center justify-between">
@@ -138,7 +147,7 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
         </div>
         <div className="flex items-center justify-center gap-4">
 
-          <div className="flex items-center gap-2 px-4 py-2 bg-[#F89D28] text-white rounded-md">
+          {/* <div className="flex items-center gap-2 px-4 py-2 bg-[#F89D28] text-white rounded-md">
             <span>Rework:-</span>
             <span
               className={`w-8 h-8 md:w-6 md:h-6 border border-[#F89D28] rounded-full bg-[#FFFFFF] flex items-center justify-center cursor-pointer ${isBlinking ? 'animate-blink' : ''
@@ -156,7 +165,35 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
             >
               <span className="text-[#F89D28]">{pendingNumbers}</span>
             </span>
+          </div> */}
+
+          <div
+            className="flex items-center gap-2 px-4 py-2 bg-[#F89D28] text-white rounded-md cursor-pointer"
+            onClick={() => handleFilter("Rework")} // Trigger filter for Rework
+          >
+            <span>Rework:-</span>
+            <span
+              className={`w-8 h-8 md:w-6 md:h-6 border border-[#F89D28] rounded-full bg-[#FFFFFF] flex items-center justify-center ${isBlinking ? 'animate-blink' : ''
+                }`}
+            >
+              <span className="text-[#F89D28]">{reworkNumbers}</span>
+            </span>
           </div>
+
+          {/* Pending Button */}
+          <div
+            className="flex items-center gap-2 px-4 py-2 bg-[#F89D28] text-white rounded-md cursor-pointer"
+            onClick={() => handleFilter("pending")} // Trigger filter for Pending
+          >
+            <span>Pending:-</span>
+            <span
+              className={`w-8 h-8 md:w-6 md:h-6 border border-[#F89D28] rounded-full bg-[#FFFFFF] flex items-center justify-center ${isBlinking ? 'animate-blink' : ''
+                }`}
+            >
+              <span className="text-[#F89D28]">{pendingNumbers}</span>
+            </span>
+          </div>
+
 
 
           <button
