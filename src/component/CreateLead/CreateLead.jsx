@@ -5,8 +5,6 @@ import { BiSolidBusiness } from "react-icons/bi";
 import { MdMapsHomeWork, MdOutlineAddHomeWork } from "react-icons/md";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { IoCarSport } from "react-icons/io5";
-// import { GiWallet } from "react-icons/gi";
-
 import PersonalLoan from "./PersonalLoan";
 import PLBT from "./PLBT";
 import HomeLoan from "./HomeLoan";
@@ -16,7 +14,6 @@ import LAPBT from "./LAPBT";
 import BusinessLoan from "./BusinessLoan";
 import UsedCarLoan from "./UsedCarLoan";
 import UsedCarLoanBT from "./UsedCarLoanBT";
-// import CreditCard from "./CreditCard";
 import MotorInsurance from "./MotorInsurance";
 import axiosInstance from "../axiosInstance";
 
@@ -65,7 +62,7 @@ const CreateLead = () => {
                 return <PLBT mobile={leadData.basicInfo.mobile} />;
             case "home-loan":
                 return <HomeLoan mobile={leadData.basicInfo.mobile} />;
-            case "hlbt":
+            case "hlbt":    
                 return <HLBT mobile={leadData.basicInfo.mobile} />;
             case "lap":
                 return <LAP mobile={leadData.basicInfo.mobile} />;
@@ -77,15 +74,13 @@ const CreateLead = () => {
                 return <UsedCarLoan mobile={leadData.basicInfo.mobile} />;
             case "used-car-loan-bt":
                 return <UsedCarLoanBT mobile={leadData.basicInfo.mobile} />;
-            // case "credit-card":
-            //     return <CreditCard mobile={leadData.basicInfo.mobile}/>;
+        
             case "motor-insurance":
                 return <MotorInsurance mobile={leadData.basicInfo.mobile} />;
             default:
                 return null;
         }
     };
-
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-2xl font-bold mb-4">Create Lead</h1>
