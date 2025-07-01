@@ -13,7 +13,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
-    password: "",
+    // password: "",
   });
 
 
@@ -26,7 +26,7 @@ const Login = () => {
   //  useEffect(()=>{
   //   getId();
   //  },[])
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
 
   const [, setValidated] = useState(false);
 
@@ -49,41 +49,48 @@ const Login = () => {
       event.preventDefault();
       event.stopPropagation();
     } else {
-      const { email, password } = loginData;
+      const { email, } = loginData;
       const loadingToast = toast.loading("Loading...");
 
       try {
       const res = await axios.post(
-        "https://api.rupaylender.com/subAdmin/login",
+        // "https://api.rupaylender.com/subAdmin/login",
+                "http://localhost:8080/subAdmin/login",
+
         {
           email,
-          password,
+          // password,
         }
       );
-      if (res.data.success) {
-        sessionStorage.setItem("token", JSON.stringify(res.data.token));
+      if(res?.data?.success){
+  sessionStorage.setItem("emailToken",res?.data?.emailOtpToken)
+  navigate("/verify-email")
 
-        const {department, role , permissions } = res.data;
+}
+      // if (res.data.success) {
+      //   sessionStorage.setItem("token", JSON.stringify(res.data.token));
 
-        setDepartment(department);
-        setSubAdminRole(role)
-        setPermission(permissions)
-        // const departemtName = department[0].replaceAll(" ", "-");
-        navigate("/user")
-        toast.update(loadingToast, {
-          render: " Successfully Login!",
-          type: "success",
-          isLoading: false,
-          autoClose: 3000,
-        });
+      //   const {department, role , permissions } = res.data;
 
-        // setTimeout(() => {
-        //   navigate(`/${departemtName}`);
-        // }, 3000);
-      }
-      else {
-        throw new Error("Something went wrong! Please try again.");
-      }
+      //   setDepartment(department);
+      //   setSubAdminRole(role)
+      //   setPermission(permissions)
+      //   // const departemtName = department[0].replaceAll(" ", "-");
+      //   navigate("/user")
+      //   toast.update(loadingToast, {
+      //     render: " Successfully Login!",
+      //     type: "success",
+      //     isLoading: false,
+      //     autoClose: 3000,
+      //   });
+
+      //   // setTimeout(() => {
+      //   //   navigate(`/${departemtName}`);
+      //   // }, 3000);
+      // }
+      // else {
+      //   throw new Error("Something went wrong! Please try again.");
+      // }
       setValidated(true);
     }
     catch (error) {
@@ -135,7 +142,7 @@ const Login = () => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-y-2">
+              {/* <div className="flex flex-col gap-y-2">
                 <label
                   htmlFor="Password"
                   className="text-base md:text-lg text-[#000000] font-normal"
@@ -172,7 +179,7 @@ const Login = () => {
                     />
                   )}
                 </div>
-              </div>
+              </div> */}
 
               <button
                 className="bg-[#F89D28]

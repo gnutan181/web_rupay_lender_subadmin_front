@@ -46,6 +46,7 @@ import MovedLead from "../component/CreateLead/MovedLead";
 import Bankers from "../component/CreateLead/Bankers";
 import CreateJobForm from "../component/Career/CreateJobForm";
 import ViewApplyJobs from "../component/Career/ViewApplyJobs";
+import OtpVerify from "../component/Login/OtpVerify";
 
 
 const User = React.lazy(() => import("../component/User/User"));
@@ -86,7 +87,7 @@ const Routers = () => {
 
   return (
     <div className="overflow-hidden min-h-[100vh] h-fit lg:flex">
-      {location.pathname !== "/login" ? (
+      {location.pathname !== "/login" && location.pathname !== '/verify-email' ? (
         <SideBar
           displaySideBar={displaySideBar}
           setDisplaySideBar={setDisplaySideBar}
@@ -94,7 +95,7 @@ const Routers = () => {
       ) : null}
 
       <div className="grow bg-[#EFEFEF] ">
-        {location.pathname !== "/login" ? (
+        {location.pathname !== "/login"&& location.pathname !== '/verify-email'  ? (
           <Navbar
             displaySideBar={displaySideBar}
             setDisplaySideBar={setDisplaySideBar}
@@ -105,8 +106,11 @@ const Routers = () => {
           <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
-
-            {subAdminRole === "manager" && (
+<Route
+                            path='/verify-email'
+                            element={<OtpVerify />}
+                        />
+            {subAdminRole === "manager" || subAdminRole === "Franchise Manager" && (
               <>
                 <Route path="/user" element={<User />} />
                 <Route path="/user-details/:userId" element={<UserDetails />} />
