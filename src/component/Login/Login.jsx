@@ -54,8 +54,8 @@ const Login = () => {
 
       try {
       const res = await axios.post(
-        // "https://api.rupaylender.com/subAdmin/login",
-                "http://localhost:8080/subAdmin/login",
+        "https://api.rupaylender.com/subAdmin/login",
+                // "http://localhost:8080/subAdmin/login",
 
         {
           email,
