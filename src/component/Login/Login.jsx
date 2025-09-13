@@ -15,7 +15,18 @@ const Login = () => {
     email: "",
     // password: "",
   });
-
+ const notify = (message, type) => {
+    switch (type) {
+      case "success":
+        toast.success(message);
+        break;
+      case "error":
+        toast.error(message);
+        break;
+      default:
+        toast(message);
+    }
+  };
 
   // const getId = async()=>{
   //   const userId = await axiosInstance.get('/admin/getId')
@@ -54,19 +65,35 @@ const Login = () => {
 
       try {
       const res = await axios.post(
-        "https://api.rupaylender.com/subAdmin/login",
-                // "http://localhost:8080/subAdmin/login",
+        // "https://api.rupaylender.com/subAdmin/login",
+                "http://localhost:8080/subAdmin/login",
 
         {
           email,
           // password,
         }
       );
+      console.log(res,"res")
       if(res?.data?.success){
   sessionStorage.setItem("emailToken",res?.data?.emailOtpToken)
   navigate("/verify-email")
+ setValidated(true);
+ console.log(res?.data?.message )
+   notify( res?.data?.message,"success")
+ return ;
 
+}else{
+console.log(res?.data?.message )
+  notify( res?.data?.message ||"Something went wrong! Please try again.","error")
+  return ;
 }
+
+// toast.update(loadingToast, {
+//         render: res?.data?.message ||"Something went wrong! Please try again.",
+//         type: "error",
+//         isLoading: false,
+//         autoClose: 5000,
+//       });
       // if (res.data.success) {
       //   sessionStorage.setItem("token", JSON.stringify(res.data.token));
 
@@ -91,22 +118,26 @@ const Login = () => {
       // else {
       //   throw new Error("Something went wrong! Please try again.");
       // }
-      setValidated(true);
+     
     }
     catch (error) {
-      toast.update(loadingToast, {
-        render: "Something went wrong! Please try again.",
-        type: "error",
-        isLoading: false,
-        autoClose: 5000,
-      });
+      // toast.update(loadingToast, {
+      //   render: "Something went wrong! Please try again.",
+      //   type: "error",
+      //   isLoading: false,
+      //   autoClose: 5000,
+      // });
+      notify("Something went wrong! Please try again.","error")
+      console.log(error?.message)
     }
+    
   }
 };
 
   return (
     <div className="min-h-[100vh] h-full md:h-[100vh] w-full bg-[#F89D28] flex items-center justify-center">
-       <ToastContainer position="top-right" />
+       {/* <ToastContainer position="top-right" /> */}
+           <ToastContainer />
       <div className="w-[90%] sm:w-[25rem] gap-6 md:gap-4 md:w-[90%] max-w-[60rem] bg-white flex flex-col md:flex-row">
         <div className="w-full md:w-[50%] py-[2rem] flex items-center justify-center h-[45vh]  md:h-[70vh]">
           <div className="w-[80%] mx-auto">

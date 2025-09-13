@@ -2,8 +2,8 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  // baseURL: 'http://localhost:8080',
-  baseURL : 'https://api.rupaylender.com'
+  baseURL: 'http://localhost:8080',
+  // baseURL : 'https://api.rupaylender.com'
 });
 
 axiosInstance.interceptors.request.use(

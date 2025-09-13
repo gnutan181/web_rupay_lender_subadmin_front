@@ -7,7 +7,8 @@ const Profile = () => {
   const fetchLoanData = async () => {
     try {
       const res = await axiosInstance.get(`/subAdmin/profile`);
-      setProfieData(res.data?.subadmin);
+      setProfieData(res?.data?.subadmin);
+      console.log(res?.data?.subadmin)
     } catch (error) {
       console.error("Error fetching loan data:", error);
     }
@@ -73,14 +74,14 @@ const Profile = () => {
               {profileData?.referral || "NA"}
             </p>
           </li>
-          <li>
+          {/* <li>
             <h5 className=" font-semibold text-sm md:text-base text-[#3B3935]">
               Referral Link
             </h5>
             <p className="font-normal text-xs md:text-sm text-[#3B3935]">
               {profileData?.referralLink || "NA"}
             </p>
-          </li>
+          </li> */}
         </ul>
 
         <div className="my-4">

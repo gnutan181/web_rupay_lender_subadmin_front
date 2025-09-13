@@ -12,8 +12,8 @@ import { NavLink } from 'react-router-dom';
 // import { useLocation } from 'react-router-dom';
 
 import { IoIosArrowDown } from "react-icons/io";
-import { department, subAdminPermission } from '../../hooks/useGetDepartment';
-import { subAdminRole } from '../../hooks/useGetDepartment';
+import { department, subAdminPermission,subAdminRole } from '../../hooks/useGetDepartment';
+// import { subAdminRole } from '../../hooks/useGetDepartment';
 // import { GiConsoleController } from 'react-icons/gi';
 
 
@@ -116,7 +116,7 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
         <div className="bg-[#3B3935] text-white">
           <ul className='h-[85vh] overflow-y-auto scrollbar-thin  scrollbar-track-[#3B3935] scrollbar-thumb-[#F89D28]'>
             {
-              subAdminRole === 'manager' && (
+              subAdminRole === 'Franchise Manager' || subAdminRole === 'distributor' && (
                 <>
 
 
@@ -130,6 +130,37 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
                       Vendors
                     </NavLink>
                   </li>
+                    {
+              subAdminRole === 'Franchise Manager' && (
+                <>
+                     <li className="m-4">
+                    <NavLink
+                      to="/cibil-leads"
+                      className={({ isActive }) =>
+                        isActive ? 'bg-[#F89D28] block p-2 text-[#FFFFFF] font-medium  text-base md:text-lg rounded-md' : 'block p-2 hover:bg-[#f89e282a] text-[#FFFFFF] font-medium  text-base md:text-lg'
+                      }
+                    >
+                      Cibils 
+                    </NavLink>
+                  </li>
+                   <li className="m-4">
+                    <NavLink
+                      to="/moved-lead"
+                      className={({ isActive }) =>
+                        isActive ? 'bg-[#F89D28] block p-2 text-[#FFFFFF] font-medium  text-base md:text-lg rounded-md' : 'block p-2 hover:bg-[#f89e282a] text-[#FFFFFF] font-medium  text-base md:text-lg'
+                      }
+                    >
+                      Moved Lead
+                    </NavLink>
+                  </li>
+                   <li className="m-4 text-[#FFFFFF] font-medium  text-base md:text-lg">
+                    <Dropdown title="Payment History">
+                      <DropdownItem to="payment/loan-payment-history">Loan Payment</DropdownItem>
+                      <DropdownItem to="payment/card-payment-history">Card payment</DropdownItem>
+                    </Dropdown>
+                  </li>
+                  </>
+                )}
 
                   <li className="m-4">
                     <NavLink
@@ -142,16 +173,7 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
                     </NavLink>
                   </li>
 
-                  <li className="m-4">
-                    <NavLink
-                      to="/moved-lead"
-                      className={({ isActive }) =>
-                        isActive ? 'bg-[#F89D28] block p-2 text-[#FFFFFF] font-medium  text-base md:text-lg rounded-md' : 'block p-2 hover:bg-[#f89e282a] text-[#FFFFFF] font-medium  text-base md:text-lg'
-                      }
-                    >
-                      Moved Lead
-                    </NavLink>
-                  </li>
+                 
 
                   {/* <li className="m-4">
                     <NavLink
@@ -166,12 +188,7 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
                   </li> */}
 
 
-                  <li className="m-4 text-[#FFFFFF] font-medium  text-base md:text-lg">
-                    <Dropdown title="Payment History">
-                      <DropdownItem to="payment/loan-payment-history">Loan Payment</DropdownItem>
-                      <DropdownItem to="payment/card-payment-history">Card payment</DropdownItem>
-                    </Dropdown>
-                  </li>
+                 
                 </>
 
               )
@@ -209,7 +226,26 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
               )
             }
 
-            <li className="m-4 text-[#FFFFFF] font-medium  text-base md:text-lg">
+           
+            {
+              subAdminRole === "distributor" ?(<li className="m-4 text-[#FFFFFF] font-medium  text-base md:text-lg">
+              <Dropdown title="Sub DSA Lead">
+           
+                        <DropdownItem to='/personal-loan'>Personal Loan</DropdownItem>
+                        <DropdownItem to='/plbt'>Personal Loan-bt</DropdownItem>
+               
+                        <DropdownItem to='/home-loan'>Home Loan</DropdownItem>
+                        <DropdownItem to='/hlbt'>Home Loan-bt</DropdownItem>
+                 
+                        <DropdownItem to='/loan-against-property'>Lap Loan</DropdownItem>
+                        <DropdownItem to='/lap-bt-loan'>Lap Loan-bt</DropdownItem>
+                 
+                        <DropdownItem to='/used-car-loan'>Used car Loan</DropdownItem>
+                        <DropdownItem to='/used-car-bt-loan'>Used car bt Loan</DropdownItem>
+                 
+                 <DropdownItem to='/business-loan'>Business Loan</DropdownItem>
+              </Dropdown>
+            </li>) : ( <li className="m-4 text-[#FFFFFF] font-medium  text-base md:text-lg">
               <Dropdown title="Sub DSA Lead">
                 {
                   department.map((item, index) => {
@@ -245,7 +281,21 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
                   })
                 }
               </Dropdown>
-            </li>
+            </li>)
+            }
+              {
+                subAdminRole === "Network Lead Manager" &&(
+                   <NavLink
+                      to="/network-lead"
+                      className={({ isActive }) =>
+                        isActive ? 'bg-[#F89D28] block p-2 text-[#FFFFFF] font-medium  text-base md:text-lg rounded-md' : 'block p-2 hover:bg-[#f89e282a] text-[#FFFFFF] font-medium  text-base md:text-lg'
+                      }
+                    >
+                      Network Lead
+                    </NavLink>
+
+                )
+              }
           </ul>
         </div>
 

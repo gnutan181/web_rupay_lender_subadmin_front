@@ -6,131 +6,132 @@ import { SearchContext } from "../../context/SearchContext";
 import PropTypes from 'prop-types';
 import { department, subAdminRole } from "../../hooks/useGetDepartment";
 
-const Loan = ({ loanType }) => {
+const NetworkLead = () => {
   const { searchValue } = useContext(SearchContext);
   const navigate = useNavigate();
   const [loanData, setLoanData] = useState(null);
-  const [searchLoanData, setSearchLoanData] = useState([]);
+//   const [searchLoanData, setSearchLoanData] = useState([]);
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(0);
-  const [managers, setManagers] = useState([]);
-  const [loadingManager, setLoadingManager] = useState(false);
-  const [loadingMove, setLoadingMove] = useState({});
+//   const [managers, setManagers] = useState([]);
+//   const [loadingManager, setLoadingManager] = useState(false);
+//   const [loadingMove, setLoadingMove] = useState({});
   const [itemsPerPage, setItemsPerPage] = useState(6);
   // for filter according to rework and pernding
-  const [filterStatus, setFilterStatus] = useState(null); // New state for filtering
+//   const [filterStatus, setFilterStatus] = useState(null); // New state for filtering
+const [loanType,setloanType] = useState('')
 
+//   const apiEndpoints = useMemo(
+//     () => ({
+//       home: "home-loan",
+//       business: "business-loan",
+//       personal: "personal-loan",
+//       plbt: "personal-loan-balance-transfer",
+//       lap: "loan-against-property",
+//       hlbt: "home-loan-balance-transfer",
+//       usedcarbt: "used-car-loan-bt",
+//       usedcar: "used-car-loan",
+//       lapbt: "loan-against-property-bt",
+//     }),
+//     []
+//   );
 
-  const apiEndpoints = useMemo(
-    () => ({
-      home: "home-loan",
-      business: "business-loan",
-      personal: "personal-loan",
-      plbt: "personal-loan-balance-transfer",
-      lap: "loan-against-property",
-      hlbt: "home-loan-balance-transfer",
-      usedcarbt: "used-car-loan-bt",
-      usedcar: "used-car-loan",
-      lapbt: "loan-against-property-bt",
-    }),
-    []
-  );
+//   const fetchSearchdata = useCallback(async () => {
+//     try {
+//       const res = await axiosInstance.get(`/subAdmin/search/${searchValue}`);
+//       setSearchLoanData(res.data);
+//     } catch (error) {
+//       console.error("Error fetching loan data:", error);
+//     }
+//   }, [searchValue]);
 
-  const fetchSearchdata = useCallback(async () => {
-    try {
-      const res = await axiosInstance.get(`/subAdmin/search/${searchValue}`);
-      setSearchLoanData(res.data);
-    } catch (error) {
-      console.error("Error fetching loan data:", error);
-    }
-  }, [searchValue]);
+//   useEffect(() => {
+//     if (searchValue) {
+//       let timeout = setTimeout(() => {
+//         fetchSearchdata();
+//       }, 800);
 
-  useEffect(() => {
-    if (searchValue) {
-      let timeout = setTimeout(() => {
-        fetchSearchdata();
-      }, 800);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [searchValue, fetchSearchdata]);
+//       return () => clearTimeout(timeout);
+//     }
+//   }, [searchValue, fetchSearchdata]);
 
   const fetchLoanData = useCallback(async () => {
     try {
       let res
-      if(department === "Network lead" || subAdminRole === "Network Lead Manager"){
+    //   if(department === "Network lead" || subAdminRole === "Network Lead Manager"){
         res = await axiosInstance.get("/admin/telecaller-lead");
-      }else{
-       res = await axiosInstance.get(`/subAdmin/manager-loans/${apiEndpoints[loanType]}`);
+    //   }else{
+    //    res = await axiosInstance.get(`/subAdmin/manager-loans/${apiEndpoints[loanType]}`);
 
-      }
+    //   }
       
       setLoanData(res?.data?.loans);
+      setloanType(res?.data?.loans?.type)
     } catch (error) {
       console.error("Error fetching loan data:", error);
     }
-  }, [apiEndpoints, loanType]);
+  }, []);
 
   useEffect(() => {
     fetchLoanData();
-  }, [loanType]);
+  }, []);
 
-  useEffect(() => {
-    if (loanData) {
-      let filteredData = loanData;
-      if (filterStatus) {
-        filteredData = loanData.filter(item => item?.status?.loanStatus === filterStatus);
-      }
-      setItems(filteredData);
-      setPageCount(Math.ceil(filteredData.length / itemsPerPage));
-    }
-  }, [loanData, filterStatus, itemsPerPage]);
+//   useEffect(() => {
+//     if (loanData) {
+//       let filteredData = loanData;
+//       if (filterStatus) {
+//         filteredData = loanData.filter(item => item?.status?.loanStatus === filterStatus);
+//       }
+//       setItems(filteredData);
+//       setPageCount(Math.ceil(filteredData.length / itemsPerPage));
+//     }
+//   }, [loanData, filterStatus, itemsPerPage]);
   
-  useEffect(() => {
-    const handleFilterChange = () => {
-      const status = localStorage.getItem("filterStatus");
-      setFilterStatus(status);
-    };
+//   useEffect(() => {
+//     const handleFilterChange = () => {
+//       const status = localStorage.getItem("filterStatus");
+//       setFilterStatus(status);
+//     };
 
-    window.addEventListener("filterStatusChanged", handleFilterChange);
-    return () => {
-      window.removeEventListener("filterStatusChanged", handleFilterChange);
-    };
-  }, []);
+//     window.addEventListener("filterStatusChanged", handleFilterChange);
+//     return () => {
+//       window.removeEventListener("filterStatusChanged", handleFilterChange);
+//     };
+//   }, []);
 
-  const fetchManagers = useCallback(async () => {
-    setLoadingManager(true);
-    try {
-      const res = await axiosInstance.get(`/subAdmin/get-manager`);
-      setManagers(res.data.subAdmin);
-    } catch (error) {
-      console.error("Error fetching managers:", error);
-    } finally {
-      setLoadingManager(false);
-    }
-  }, []);
+//   const fetchManagers = useCallback(async () => {
+//     setLoadingManager(true);
+//     try {
+//       const res = await axiosInstance.get(`/subAdmin/get-manager`);
+//       setManagers(res.data.subAdmin);
+//     } catch (error) {
+//       console.error("Error fetching managers:", error);
+//     } finally {
+//       setLoadingManager(false);
+//     }
+//   }, []);
 
-  useEffect(() => {
-    fetchManagers();
-  }, [fetchManagers]);
+//   useEffect(() => {
+//     fetchManagers();
+//   }, [fetchManagers]);
 
-  const handleMoveTo = async (leadId, movedTo) => {
-    setLoadingMove((prev) => ({ ...prev, [leadId]: true }));
-    try {
-      await axiosInstance.patch(`/subAdmin/move-to/${leadId}`, { movedTo });
-      alert(`Lead moved to ${movedTo}`);
-      fetchLoanData();
-    } catch (error) {
-      console.error("Error moving lead:", error);
-      alert("Lead not moved");
-    } finally {
-      setLoadingMove((prev) => ({ ...prev, [leadId]: false }));
-    }
-  };
+//   const handleMoveTo = async (leadId, movedTo) => {
+//     setLoadingMove((prev) => ({ ...prev, [leadId]: true }));
+//     try {
+//       await axiosInstance.patch(`/subAdmin/move-to/${leadId}`, { movedTo });
+//       alert(`Lead moved to ${movedTo}`);
+//       fetchLoanData();
+//     } catch (error) {
+//       console.error("Error moving lead:", error);
+//       alert("Lead not moved");
+//     } finally {
+//       setLoadingMove((prev) => ({ ...prev, [leadId]: false }));
+//     }
+//   };
 
   const handleViewDetails = (id) => {
-    navigate(`/${loanType}-loan-details/${id}`);
+    navigate(`/${loanType?loanType:""}-loan-details/${id}`);
   };
 
   const getStatusColor = (status) => {
@@ -176,9 +177,9 @@ const Loan = ({ loanType }) => {
 
   return (
     <div className="flex flex-col bg-[#FFFFFF]  m-2 p-2 font-Inter w-full">
-      <h2 className="text-lg md:text-xl text-[#3B3935] font-semibold my-2 capitalize">
+      {/* <h2 className="text-lg md:text-xl text-[#3B3935] font-semibold my-2 capitalize">
         {loanType}
-      </h2>
+      </h2> */}
 
       <div className="-m-1.5 overflow-x-auto h-[70vh] overflow-y-scroll">
         <div className="p-1.5 min-w-full inline-block align-middle">
@@ -190,10 +191,13 @@ const Loan = ({ loanType }) => {
                     Application Id
                   </th>
                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                    Vendor Name
+                    Telecaller Name
                   </th>
                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
-                    Vendor No.
+                    Telecaller No.
+                  </th>
+                    <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
+                   Type
                   </th>
                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                     Created loan
@@ -207,19 +211,15 @@ const Loan = ({ loanType }) => {
                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                     Action
                   </th>
-                    {(subAdminRole !== "distributor") &&(
+                    {/* {(subAdminRole !== "distributor") &&(
                   <th className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">
                     Moved To
-                  </th>)}
+                  </th>)} */}
                 </tr>
               </thead>
               <tbody>
-                {(searchValue ? searchLoanData : items)
-                  .slice(
-                    currentPage * itemsPerPage,
-                    (currentPage + 1) * itemsPerPage
-                  )
-                  .map((item, i) => (
+                {
+                 loanData?.map((item, i) => (
                     <tr
                       key={i}
                       className="bg-white border-b text-[#3B3935] font-normal text-xs md:text-sm"
@@ -230,6 +230,9 @@ const Loan = ({ loanType }) => {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                         {item.vendorInfo?.mobile || "N/A"}
+                      </td>
+                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
+                        {item?.type || "N/A"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
                         {item?.createdLoan || "N/A"}
@@ -249,7 +252,7 @@ const Loan = ({ loanType }) => {
                           onClick={() => handleViewDetails(item._id)}
                         />
                       </td>
-                      {(subAdminRole !== "distributor") &&
+                      {/* {(subAdminRole !== "distributor") &&
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                         {loadingManager ? (
                           <div className="spinner">Loading...</div>
@@ -273,7 +276,7 @@ const Loan = ({ loanType }) => {
                           </div>
                         )}
                         {item?.movedTo || "Not moved To anyone"}
-                      </td>}
+                      </td>} */}
                     </tr>
                   ))}
               </tbody>
@@ -324,8 +327,8 @@ const Loan = ({ loanType }) => {
   );
 };
 
-Loan.propTypes = {
-  loanType: PropTypes.string,
-};
+// Loan.propTypes = {
+//   loanType: PropTypes.string,
+// };
 
-export default Loan;
+export default NetworkLead;

@@ -352,7 +352,7 @@ const LoanDetails = () => {
     <div className="bg-[#FFFFFF] m-4 p-4 font-Inter h-[85vh] overflow-y-scroll">
       <div className="flex items-center justify-between">
         <h2 className="text-lg md:text-xl text-[#3B3935] font-semibold my-2">
-          {loanType.replace(/-/g, " ")}
+          {loanType?loanType.replace(/-/g, " ") : "Detail"}
         </h2>
         <div className="flex items-center gap-4">
           {

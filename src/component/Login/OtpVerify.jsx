@@ -58,8 +58,8 @@ const OtpVerify = () => {
     setLoading(true);
     try {
       const emailToken = sessionStorage.getItem("emailToken");
-      const res = await axios.post("http://localhost:8080/subAdmin/verify-email", {
-          // const res = await axios.post("https://api.rupaylender.com/subAdmin/verify-email", {
+      // const res = await axios.post("http://localhost:8080/subAdmin/verify-email", {
+          const res = await axios.post("https://api.rupaylender.com/subAdmin/verify-email", {
 
         
         OTP:otp,

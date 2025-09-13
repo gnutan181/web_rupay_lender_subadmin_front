@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { SearchContext } from "../../context/SearchContext";
 import debounce from "lodash.debounce";
 import axiosInstance from "../axiosInstance";
-import { subAdminPermission } from "../../hooks/useGetDepartment";
+import { subAdminPermission, subAdminRole } from "../../hooks/useGetDepartment";
 import './Navbar.css';
 
 const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
@@ -166,8 +166,9 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
               <span className="text-[#F89D28]">{pendingNumbers}</span>
             </span>
           </div> */}
-
-          <div
+{( subAdminRole !== "distributor") && (
+  <>
+     <div
             className="flex items-center gap-2 px-4 py-2 bg-[#F89D28] text-white rounded-md cursor-pointer"
             onClick={() => handleFilter("Rework")} // Trigger filter for Rework
           >
@@ -180,7 +181,7 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
             </span>
           </div>
 
-          {/* Pending Button */}
+     
           <div
             className="flex items-center gap-2 px-4 py-2 bg-[#F89D28] text-white rounded-md cursor-pointer"
             onClick={() => handleFilter("pending")} // Trigger filter for Pending
@@ -194,6 +195,9 @@ const Navbar = ({ displaySideBar, setDisplaySideBar }) => {
             </span>
           </div>
 
+  </>
+) }
+       
 
 
           <button

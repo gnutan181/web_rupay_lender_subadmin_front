@@ -47,6 +47,8 @@ import Bankers from "../component/CreateLead/Bankers";
 import CreateJobForm from "../component/Career/CreateJobForm";
 import ViewApplyJobs from "../component/Career/ViewApplyJobs";
 import OtpVerify from "../component/Login/OtpVerify";
+import Cibil from "../component/Cibil";
+import NetworkLead from "../component/Networklead/NetworkLead";
 
 
 const User = React.lazy(() => import("../component/User/User"));
@@ -106,19 +108,30 @@ const Routers = () => {
           <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
+            {
+                  <Route path="/network-lead" element={<NetworkLead />} />
+            }
+             {subAdminRole === "manager" || subAdminRole === "Franchise Manager" && (
+              <>
+                <Route path="/cibil-leads" element={<Cibil />} />
+              </>
+            )}
+                      
+
 <Route
                             path='/verify-email'
                             element={<OtpVerify />}
                         />
-            {subAdminRole === "manager" || subAdminRole === "Franchise Manager" && (
+            {subAdminRole === "manager" || subAdminRole === "Franchise Manager" || subAdminRole === "distributor" && (
               <>
                 <Route path="/user" element={<User />} />
                 <Route path="/user-details/:userId" element={<UserDetails />} />
+                  <Route path="/create-lead" element={<CreateLead />} />
               </>
             )}
-            {subAdminRole === "manager" && (
+            {subAdminRole === "manager" || subAdminRole === "Franchise Manager" && (
               <>
-                <Route path="/create-lead" element={<CreateLead />} />
+              
                 <Route path="/moved-lead" element={<MovedLead />} />
               </>
             )}
@@ -131,7 +144,7 @@ const Routers = () => {
             {/* )} */}
 
 
-            {department.includes("personal loan") && (
+            {(department.includes("personal loan") || subAdminRole === "distributor")&& (
               <>
                 <Route
                   path="/personal-loan"
@@ -140,19 +153,19 @@ const Routers = () => {
                 <Route path="/plbt" element={<Loan loanType="plbt" />} />
               </>
             )}
-            {department.includes("home loan") && (
+            {(department.includes("home loan") || subAdminRole === "distributor" )&& (
               <>
                 <Route path="/home-loan" element={<Loan loanType="home" />} />
                 <Route path="/hlbt" element={<Loan loanType="hlbt" />} />
               </>
             )}
-            {department.includes("business loan") && (
+            {(department.includes("business loan") || subAdminRole === "distributor")&& (
               <Route
                 path="/business-loan"
                 element={<Loan loanType="business" />}
               />
             )}
-            {department.includes("loan against property") && (
+            {(department.includes("loan against property")|| subAdminRole === "distributor") && (
               <>
                 <Route path="/loan-against-property" element={<Loan loanType="lap" />} />
                 <Route
@@ -161,7 +174,7 @@ const Routers = () => {
                 />
               </>
             )}
-            {department.includes("used car loan") && (
+            {(department.includes("used car loan") || subAdminRole === "distributor")&& (
               <>
                 <Route
                   path="/used-car-loan"
