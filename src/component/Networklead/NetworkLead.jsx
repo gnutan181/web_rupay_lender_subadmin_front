@@ -60,11 +60,8 @@ const [loanType,setloanType] = useState('')
     try {
       let res
     //   if(department === "Network lead" || subAdminRole === "Network Lead Manager"){
-        res = await axiosInstance.get("/admin/telecaller-lead");
-    //   }else{
-    //    res = await axiosInstance.get(`/subAdmin/manager-loans/${apiEndpoints[loanType]}`);
-
-    //   }
+        res = await axiosInstance.get("/subAdmin/get-telecaller-lead");
+  
       
       setLoanData(res?.data?.loans);
       setloanType(res?.data?.loans?.type)
@@ -219,7 +216,8 @@ const [loanType,setloanType] = useState('')
               </thead>
               <tbody>
                 {
-                 loanData?.map((item, i) => (
+              loanData?.length >0 ?  loanData?.map((item, i) =>
+                   (
                     <tr
                       key={i}
                       className="bg-white border-b text-[#3B3935] font-normal text-xs md:text-sm"
@@ -278,7 +276,17 @@ const [loanType,setloanType] = useState('')
                         {item?.movedTo || "Not moved To anyone"}
                       </td>} */}
                     </tr>
-                  ))}
+                  )
+                  )
+                  :<>
+                  <div 
+                  className="text-center my-40"
+                  >
+No loan found
+                  </div>
+
+                  </>
+                }
               </tbody>
             </table>
           </div>

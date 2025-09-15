@@ -71,7 +71,7 @@ const Profile = () => {
               Referral
             </h5>
             <p className="font-normal text-xs md:text-sm text-[#3B3935]">
-              {profileData?.referral || "NA"}
+              {profileData?.referral ||profileData?.referralLink ||"NA"}
             </p>
           </li>
           {/* <li>

@@ -49,6 +49,7 @@ import ViewApplyJobs from "../component/Career/ViewApplyJobs";
 import OtpVerify from "../component/Login/OtpVerify";
 import Cibil from "../component/Cibil";
 import NetworkLead from "../component/Networklead/NetworkLead";
+import Telecallers from "../component/Telecallers/Telecallers";
 
 
 const User = React.lazy(() => import("../component/User/User"));
@@ -108,8 +109,12 @@ const Routers = () => {
           <Routes>
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
-            {
-                  <Route path="/network-lead" element={<NetworkLead />} />
+            { subAdminRole === "Network Lead Manager" &&
+                 (<>
+             <Route path="/network-lead" element={<NetworkLead />} />
+                  <Route path="/telecallers" element={<Telecallers />} />
+    </> 
+                 )    
             }
              {subAdminRole === "manager" || subAdminRole === "Franchise Manager" && (
               <>

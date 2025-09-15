@@ -285,6 +285,7 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
             }
               {
                 subAdminRole === "Network Lead Manager" &&(
+                  <>
                    <NavLink
                       to="/network-lead"
                       className={({ isActive }) =>
@@ -294,6 +295,15 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
                       Network Lead
                     </NavLink>
 
+                   {/* <NavLink
+                      to="/telecallers"
+                      className={({ isActive }) =>
+                        isActive ? 'bg-[#F89D28] block p-2 text-[#FFFFFF] font-medium  text-base md:text-lg rounded-md' : 'block p-2 hover:bg-[#f89e282a] text-[#FFFFFF] font-medium  text-base md:text-lg'
+                      }
+                    >
+                      Telecallers
+                    </NavLink> */}
+                    </>
                 )
               }
           </ul>
