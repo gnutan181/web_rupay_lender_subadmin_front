@@ -25,7 +25,7 @@ const Login = React.lazy(() => import("../component/Login/Login"));
 const SideBar = React.lazy(() => import("../component/SideBar/SideBar"));
 const Navbar = React.lazy(() => import("../component/Navbar/Navbar"));
 
-import { department, subAdminPermission } from "../hooks/useGetDepartment";
+import { department } from "../hooks/useGetDepartment";
 import { subAdminRole } from "../hooks/useGetDepartment";
 import GstRegistration from "../component/CAService/GstRegistration";
 import GstIncomeTaxReturn from "../component/CAService/GstIncomeTaxReturn";

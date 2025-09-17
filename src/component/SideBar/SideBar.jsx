@@ -295,14 +295,14 @@ const SideBar = ({ displaySideBar, setDisplaySideBar }) => {
                       Network Lead
                     </NavLink>
 
-                   {/* <NavLink
+                   <NavLink
                       to="/telecallers"
                       className={({ isActive }) =>
                         isActive ? 'bg-[#F89D28] block p-2 text-[#FFFFFF] font-medium  text-base md:text-lg rounded-md' : 'block p-2 hover:bg-[#f89e282a] text-[#FFFFFF] font-medium  text-base md:text-lg'
                       }
                     >
                       Telecallers
-                    </NavLink> */}
+                    </NavLink>
                     </>
                 )
               }
