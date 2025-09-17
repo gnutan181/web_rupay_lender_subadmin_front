@@ -139,9 +139,12 @@ const Telecallers = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                         {item?.product || "N/A"}
                       </td>
+                      {
+item?.createdAt &&
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
                         {format(new Date(item?.createdAt), "yyyy-MM-dd")  || "N/A"}
                       </td>
+                        }
                     </tr>
                   </tbody>
                 ))}
